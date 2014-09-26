@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ru.setco.astore.service;
+package rest;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -29,11 +24,11 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(ru.setco.astore.NewCrossOriginResourceSharingFilter.class);
-        resources.add(ru.setco.astore.service.CategoryFacadeREST.class);
-        resources.add(ru.setco.astore.service.CategoryResource.class);
-        resources.add(ru.setco.astore.service.TicketByCategoryFacadeREST.class);
-        resources.add(ru.setco.astore.service.TicketFacadeREST.class);
+        resources.add(rest.NewCrossOriginResourceSharingFilter.class);
+        resources.add(rest.PurchaseREST.class);
+        resources.add(rest.RouteREST.class);
+        resources.add(rest.TicketREST.class);
+        resources.add(rest.service.RouteFacadeREST.class);
     }
     
 }

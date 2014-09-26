@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.setco.astore.session;
+package session;
 
+import entity.Route;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import ru.setco.astore.entity.Category;
 
 /**
  *
  * @author OLEG
  */
 @Stateless
-public class CategoryFacade extends AbstractFacade<Category> {
+public class RouteFacade extends AbstractFacade<Route> {
     @PersistenceContext(unitName = "aStorePU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class CategoryFacade extends AbstractFacade<Category> {
         return em;
     }
 
-    public CategoryFacade() {
-        super(Category.class);
+    public RouteFacade() {
+        super(Route.class);
     }
     
 }
