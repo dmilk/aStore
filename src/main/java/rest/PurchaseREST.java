@@ -6,8 +6,10 @@
 package rest;
 
 import cart.ShoppingCart;
+import entity.CustomerOrder;
 import entity.Ticket;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -23,28 +25,28 @@ import session.TicketFacade;
  */
 @Path("purchase")
 public class PurchaseREST {
-    
+
     @EJB
     private OrderManager orderManager;
-    
+
     @EJB
     private TicketFacade ticketFacade;
 
-    
     @POST
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public OrderConfirmationJson placeOrder(OrderJson orderJson) {
         System.out.println("OrderJson\n");
         System.out.println(orderJson);
-        
+
         int orderId = 0;
-        orderId = orderManager.placeOrder(orderJson.firstName, orderJson.secondName, orderJson.email, orderJson.phone, 
+        orderId = orderManager.placeOrder(orderJson.firstName, orderJson.secondName, orderJson.email, orderJson.phone,
                 orderJson.routeId, convertJsonCart(orderJson.cart));
-        
-        return new OrderConfirmationJson(1);
+
+        Map orderMap = orderManager.getOrderDetails(orderId);
+        return new OrderConfirmationJson(((CustomerOrder) orderMap.get("orderRecord")).getConfirmationNumber());
     }
-    
+
     private ShoppingCart convertJsonCart(List<TicketJson> tickets) {
         ShoppingCart shoppingCart = new ShoppingCart();
         for (TicketJson ticketJson : tickets) {
@@ -56,8 +58,9 @@ public class PurchaseREST {
 
     public PurchaseREST() {
     }
-    
+
     public static class OrderJson {
+
         public String firstName;
         public String secondName;
         public String email;
@@ -68,8 +71,9 @@ public class PurchaseREST {
         public OrderJson() {
         }
     }
-    
+
     public static class TicketJson {
+
         public int id;
         public String ticketData;
 
@@ -80,10 +84,11 @@ public class PurchaseREST {
             this.id = id;
             this.ticketData = ticketData;
         }
-        
+
     }
-    
+
     public static class OrderConfirmationJson {
+
         public int orderId;
 
         public OrderConfirmationJson() {
@@ -98,6 +103,5 @@ public class PurchaseREST {
             return "OrderConfirmationJson{" + "orderId=" + orderId + '}';
         }
     }
-
 
 }

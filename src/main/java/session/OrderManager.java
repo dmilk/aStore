@@ -80,31 +80,31 @@ public class OrderManager {
 
         em.persist(customer);
         // to get auto-generated value
-        em.flush();
-        System.out.println("===CUTOMER_ID = " + customer.getId());
+//        em.flush();
+//        System.out.println("===CUTOMER_ID = " + customer.getId());
         
         return customer;
     }
     
     private CustomerOrder addCustomerOrder(Customer customer, Route route, ShoppingCart cart) {
-        CustomerOrder order = new CustomerOrder();
-        order.setCustomer(customer);
-        order.setRoute(route);
-        order.setAmount(BigDecimal.valueOf(cart.getTotal()));
+        CustomerOrder customerOrder = new CustomerOrder();
+        customerOrder.setCustomer(customer);
+        customerOrder.setRoute(route);
+        customerOrder.setAmount(BigDecimal.valueOf(cart.getTotal()));
         
         Random random = new Random();
-        int cn = random.nextInt(Integer.MAX_VALUE);
-        order.setConfirmationNumber(cn);
+        int confirmationNumber = random.nextInt(Integer.MAX_VALUE);
+        customerOrder.setConfirmationNumber(confirmationNumber);
         
-        em.persist(order);
+        em.persist(customerOrder);
         
-        em.flush();
+//        em.flush();
         
-        return order;
+        return customerOrder;
     }
     
     private void addOrderedItems(CustomerOrder order, ShoppingCart cart) {
-//        em.flush();
+        em.flush();
         
         List<ShoppingCartItem> items = cart.getItems();
         for(ShoppingCartItem item : items) {
@@ -124,13 +124,13 @@ public class OrderManager {
     public Map getOrderDetails(int orderId) {
         Map orderMap = new HashMap();
         
-        CustomerOrder order = customerOrderFacade.find(orderId);
+        CustomerOrder customerOrder = customerOrderFacade.find(orderId);
         
-        Customer customer = order.getCustomer();
+        Customer customer = customerOrder.getCustomer();
         
         List<OrderedTicket> orderedTickets = orderedTicketFacade.findByOrderId(orderId);
         
-        Route route = order.getRoute();
+        Route route = customerOrder.getRoute();
 
         List<Ticket> tickets = new ArrayList<Ticket>();
        
@@ -139,7 +139,7 @@ public class OrderManager {
             tickets.add(ticket);
         }
         
-        orderMap.put("orderRecord", order);
+        orderMap.put("orderRecord", customerOrder);
         orderMap.put("customer", customer);
         orderMap.put("route", route);
         orderMap.put("orderedTickets", orderedTickets);
