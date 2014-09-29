@@ -5,6 +5,7 @@
  */
 package rest;
 
+import entity.Customer;
 import entity.Ticket;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,11 +14,12 @@ import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import session.CategoryFacade;
 import session.TicketFacade;
 
@@ -29,6 +31,9 @@ import session.TicketFacade;
 @Stateless
 @Path("ticket")
 public class TicketREST {
+    
+//    @PersistenceContext(unitName = "aStorePU")
+//    private EntityManager em;
 
     @EJB
     TicketFacade ticketFacade;
@@ -58,6 +63,20 @@ public class TicketREST {
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
     public Collection<Ticket> findByCategory(@PathParam("id") Integer categoryId) {
+        
+//        if (categoryId == 0) {
+//            System.out.println("===TEST===");
+//            Customer customer = new Customer();
+//            customer.setFirstName("f");
+//            customer.setLastName("l");
+//            customer.setEmail("eee");
+//            customer.setPhone("dddd");
+//            em.persist(customer);
+//            em.flush();
+//            System.out.println("id = " + customer.getId());
+//            categoryId = 1;
+//        }
+        
         List<Ticket> tickets = new ArrayList<Ticket>(categoryFacade.find(categoryId).getTicketCollection());
         Collections.sort(tickets, TicketNameComparator);
         return tickets;

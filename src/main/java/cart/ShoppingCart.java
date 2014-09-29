@@ -54,6 +54,7 @@ public class ShoppingCart {
     }
     
     public synchronized double getTotal() {
+        calculateTotal();
         return total;
     }
     

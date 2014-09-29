@@ -54,7 +54,6 @@ public class CustomerOrder implements Serializable {
     @Column(name = "AMOUNT")
     private BigDecimal amount;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "DATE_CREATED")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;

@@ -35,6 +35,9 @@ public class PurchaseREST {
     @Consumes({"application/json"})
     @Produces({"application/json"})
     public OrderConfirmationJson placeOrder(OrderJson orderJson) {
+        System.out.println("OrderJson\n");
+        System.out.println(orderJson);
+        
         int orderId = 0;
         orderId = orderManager.placeOrder(orderJson.firstName, orderJson.secondName, orderJson.email, orderJson.phone, 
                 orderJson.routeId, convertJsonCart(orderJson.cart));

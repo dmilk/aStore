@@ -57,32 +57,36 @@ public class OrderManager {
     TicketFacade ticketFacade;
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public int placeOrder(String first_name, String last_name, String email, String phone, int routeId, ShoppingCart cart) {
+    public int placeOrder(String firstName, String lastName, String email, String phone, int routeId, ShoppingCart cart) {
         try {
-            Customer customer = addCustomer(first_name, last_name, email, phone);
+            Customer customer = addCustomer(firstName, lastName, email, phone);
             Route route = routeFacade.find(routeId);
-            CustomerOrder customerOrder = addOrder(customer, route, cart);
+            CustomerOrder customerOrder = addCustomerOrder(customer, route, cart);
             addOrderedItems(customerOrder, cart);
             return customerOrder.getId();
         } catch (Exception e) {
+            System.out.println(e);
             context.setRollbackOnly();
             return 0;
         }
     }
 
-    private Customer addCustomer(String first_name, String last_name, String email, String phone) {
+    private Customer addCustomer(String firstName, String lastName, String email, String phone) {
         Customer customer = new Customer();
-        customer.setFirstName(first_name);
-        customer.setLastName(last_name);
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
         customer.setEmail(email);
         customer.setPhone(phone);
-        
+
         em.persist(customer);
+        // to get auto-generated value
+        em.flush();
+        System.out.println("===CUTOMER_ID = " + customer.getId());
         
         return customer;
     }
     
-    private CustomerOrder addOrder(Customer customer, Route route, ShoppingCart cart) {
+    private CustomerOrder addCustomerOrder(Customer customer, Route route, ShoppingCart cart) {
         CustomerOrder order = new CustomerOrder();
         order.setCustomer(customer);
         order.setRoute(route);
@@ -94,11 +98,13 @@ public class OrderManager {
         
         em.persist(order);
         
+        em.flush();
+        
         return order;
     }
     
     private void addOrderedItems(CustomerOrder order, ShoppingCart cart) {
-        em.flush();
+//        em.flush();
         
         List<ShoppingCartItem> items = cart.getItems();
         for(ShoppingCartItem item : items) {
