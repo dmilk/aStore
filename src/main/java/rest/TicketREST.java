@@ -6,16 +6,19 @@
 package rest;
 
 import entity.Ticket;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import session.CategoryFacade;
 import session.TicketFacade;
 
 /**
@@ -30,6 +33,9 @@ public class TicketREST {
     @EJB
     TicketFacade ticketFacade;
 
+    @EJB
+    CategoryFacade categoryFacade;
+
     /**
      * Creates a new instance of TicketREST
      */
@@ -38,22 +44,32 @@ public class TicketREST {
 
     /**
      * Retrieves representation of an instance of rest.TicketREST
+     *
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces({"application/xml","application/json"})
-    public List<Ticket> getXml() {
+    @Produces({"application/xml", "application/json"})
+    public List<Ticket> finaAll() {
         //TODO return proper representation object
         return ticketFacade.findAll();
     }
 
-    /**
-     * PUT method for updating or creating an instance of TicketREST
-     * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
-     */
-    @PUT
-    @Consumes("application/xml")
-    public void putXml(String content) {
+    @GET
+    @Path("{id}")
+    @Produces({"application/xml", "application/json"})
+    public Collection<Ticket> findByCategory(@PathParam("id") Integer categoryId) {
+        List<Ticket> tickets = new ArrayList<Ticket>(categoryFacade.find(categoryId).getTicketCollection());
+        Collections.sort(tickets, TicketNameComparator);
+        return tickets;
     }
+
+    public static Comparator<Ticket> TicketNameComparator = new Comparator<Ticket>() {
+        @Override
+        public int compare(Ticket t1, Ticket t2) {
+            String ticketName1 = t1.getName();
+            String ticketName2 = t2.getName();
+            return ticketName1.compareTo(ticketName2);
+        }
+    };
+
 }

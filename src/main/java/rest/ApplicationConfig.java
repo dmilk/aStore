@@ -7,7 +7,7 @@ import javax.ws.rs.core.Application;
  *
  * @author OLEG
  */
-@javax.ws.rs.ApplicationPath("rs")
+@javax.ws.rs.ApplicationPath("rest")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -24,6 +24,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(rest.CategoryREST.class);
         resources.add(rest.NewCrossOriginResourceSharingFilter.class);
         resources.add(rest.PurchaseREST.class);
         resources.add(rest.RouteREST.class);

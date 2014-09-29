@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -45,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Ticket.findByLastUpdate", query = "SELECT t FROM Ticket t WHERE t.lastUpdate = :lastUpdate"),
     @NamedQuery(name = "Ticket.findByDataLabel", query = "SELECT t FROM Ticket t WHERE t.dataLabel = :dataLabel")})
 public class Ticket implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -184,5 +186,5 @@ public class Ticket implements Serializable {
     public String toString() {
         return "entity.Ticket[ id=" + id + " ]";
     }
-    
+
 }

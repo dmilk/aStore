@@ -5,35 +5,34 @@
  */
 package rest;
 
-import entity.Route;
+import entity.Category;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
-import session.RouteFacade;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PUT;
+import javax.ws.rs.core.MediaType;
+import session.CategoryFacade;
 
 /**
  * REST Web Service
  *
- * @author OLEG
+ * @author Notreal
  */
-@Stateless
-@Path("route")
-public class RouteREST {
+@Path("category")
+public class CategoryREST {
     
     @EJB
-    RouteFacade routeFacade;
+    CategoryFacade categoryFacade;
 
-    public RouteREST() {
+    public CategoryREST() {
     }
 
     @GET
     @Produces({"application/xml", "application/json"})
-    public List<Route> findAll() {
-        return routeFacade.findAll();
+    public List<Category> findAll() {
+        return categoryFacade.findAll();
     }
 }
