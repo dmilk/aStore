@@ -19,9 +19,6 @@ public class ShoppingCartItem {
     public ShoppingCartItem(Ticket ticket, String ticketData) {
         this.ticket = ticket;
         this.ticketData = ticketData;
-        // гвоздь
-        if (ticketData == null)
-            this.ticketData = "testData";
     }
 
     public Ticket getTicket() {

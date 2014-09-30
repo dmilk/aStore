@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,7 +69,7 @@ public class CustomerOrder implements Serializable {
     @ManyToOne(optional = false)
     private Customer customer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerOrder")
-    private Collection<OrderedTicket> orderedTicketCollection;
+    private List<OrderedTicket> orderedTicketCollection;
 
     public CustomerOrder() {
     }
@@ -133,11 +134,11 @@ public class CustomerOrder implements Serializable {
     }
 
     @XmlTransient
-    public Collection<OrderedTicket> getOrderedTicketCollection() {
+    public List<OrderedTicket> getOrderedTicketCollection() {
         return orderedTicketCollection;
     }
 
-    public void setOrderedTicketCollection(Collection<OrderedTicket> orderedTicketCollection) {
+    public void setOrderedTicketCollection(List<OrderedTicket> orderedTicketCollection) {
         this.orderedTicketCollection = orderedTicketCollection;
     }
 
