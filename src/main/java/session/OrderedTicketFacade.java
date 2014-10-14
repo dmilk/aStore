@@ -29,8 +29,8 @@ public class OrderedTicketFacade extends AbstractFacade<OrderedTicket> {
         super(OrderedTicket.class);
     }
     
-    public List<OrderedTicket> findByOrderId(Object id) {
-        return em.createNamedQuery("OrderedTicket.findByCustomerOrderId").setParameter("customerOrderId", id).getResultList();
-    }
+//    public List<OrderedTicket> findByOrderId(Object id) {
+//        return em.createNamedQuery("OrderedTicket.findByCustomerOrderId").setParameter("customerOrderId", id).getResultList();
+//    }
     
 }

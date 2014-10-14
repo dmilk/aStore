@@ -10,7 +10,6 @@ import cart.ShoppingCartItem;
 import entity.Customer;
 import entity.CustomerOrder;
 import entity.OrderedTicket;
-import entity.OrderedTicketPK;
 import entity.Route;
 import entity.Ticket;
 import java.math.BigDecimal;
@@ -103,18 +102,16 @@ public class OrderManager {
         return customerOrder;
     }
     
-    private void addOrderedItems(CustomerOrder order, ShoppingCart cart) {
+    private void addOrderedItems(CustomerOrder customerOrder, ShoppingCart cart) {
         em.flush();
         
         List<ShoppingCartItem> items = cart.getItems();
         for(ShoppingCartItem item : items) {
             int ticketId = item.getTicket().getId();
             
-            OrderedTicketPK orderedTicketPK = new OrderedTicketPK();
-            orderedTicketPK.setCustomerOrderId(order.getId());
-            orderedTicketPK.setTicketId(ticketId);
-            
-            OrderedTicket orderedTicket = new OrderedTicket(orderedTicketPK);
+            OrderedTicket orderedTicket = new OrderedTicket();
+            orderedTicket.setCustomerOrder(customerOrder);
+            orderedTicket.setTicket(item.getTicket());
             orderedTicket.setTicketData(item.getTicketData());
             
             em.persist(orderedTicket);
@@ -128,14 +125,15 @@ public class OrderManager {
         
         Customer customer = customerOrder.getCustomer();
         
-        List<OrderedTicket> orderedTickets = orderedTicketFacade.findByOrderId(orderId);
+        List<OrderedTicket> orderedTickets = customerOrder.getOrderedTicketCollection();
         
         Route route = customerOrder.getRoute();
 
         List<Ticket> tickets = new ArrayList<Ticket>();
        
         for (OrderedTicket orderedTicket:  orderedTickets) {
-            Ticket ticket = ticketFacade.find(orderedTicket.getOrderedTicketPK().getTicketId());
+            Ticket ticket = orderedTicket.getTicket();
+//            Ticket ticket = ticketFacade.find(orderedTicket.getOrderedTicketPK().getTicketId());
             tickets.add(ticket);
         }
         

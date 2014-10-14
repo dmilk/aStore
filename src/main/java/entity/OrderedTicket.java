@@ -8,8 +8,10 @@ package entity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -28,47 +30,47 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "OrderedTicket.findAll", query = "SELECT o FROM OrderedTicket o"),
-    @NamedQuery(name = "OrderedTicket.findByCustomerOrderId", query = "SELECT o FROM OrderedTicket o WHERE o.orderedTicketPK.customerOrderId = :customerOrderId"),
-    @NamedQuery(name = "OrderedTicket.findByTicketId", query = "SELECT o FROM OrderedTicket o WHERE o.orderedTicketPK.ticketId = :ticketId"),
-    @NamedQuery(name = "OrderedTicket.findByTicketData", query = "SELECT o FROM OrderedTicket o WHERE o.ticketData = :ticketData")})
+    @NamedQuery(name = "OrderedTicket.findById", query = "SELECT o FROM OrderedTicket o WHERE o.id = :id"),
+    @NamedQuery(name = "OrderedTicket.findByTicketData", query = "SELECT o FROM OrderedTicket o WHERE o.ticketData = :ticketData")
+//            @NamedQuery(name = "OrderedTicket.findByCustomerOrderId", query = "SELECT o FROM OrderedTicket o WHERE o.customerOrder = :customerOrder")
+        })
 public class OrderedTicket implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected OrderedTicketPK orderedTicketPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1024)
     @Column(name = "TICKET_DATA")
     private String ticketData;
-    @JoinColumn(name = "TICKET_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Ticket ticket;
-    @JoinColumn(name = "CUSTOMER_ORDER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "CUSTOMER_ORDER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private CustomerOrder customerOrder;
+    @JoinColumn(name = "TICKET_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Ticket ticket;
 
     public OrderedTicket() {
     }
 
-    public OrderedTicket(OrderedTicketPK orderedTicketPK) {
-        this.orderedTicketPK = orderedTicketPK;
+    public OrderedTicket(Integer id) {
+        this.id = id;
     }
 
-    public OrderedTicket(OrderedTicketPK orderedTicketPK, String ticketData) {
-        this.orderedTicketPK = orderedTicketPK;
+    public OrderedTicket(Integer id, String ticketData) {
+        this.id = id;
         this.ticketData = ticketData;
     }
 
-    public OrderedTicket(int customerOrderId, int ticketId) {
-        this.orderedTicketPK = new OrderedTicketPK(customerOrderId, ticketId);
+    public Integer getId() {
+        return id;
     }
 
-    public OrderedTicketPK getOrderedTicketPK() {
-        return orderedTicketPK;
-    }
-
-    public void setOrderedTicketPK(OrderedTicketPK orderedTicketPK) {
-        this.orderedTicketPK = orderedTicketPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTicketData() {
@@ -79,14 +81,6 @@ public class OrderedTicket implements Serializable {
         this.ticketData = ticketData;
     }
 
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
     public CustomerOrder getCustomerOrder() {
         return customerOrder;
     }
@@ -95,10 +89,18 @@ public class OrderedTicket implements Serializable {
         this.customerOrder = customerOrder;
     }
 
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (orderedTicketPK != null ? orderedTicketPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -109,7 +111,7 @@ public class OrderedTicket implements Serializable {
             return false;
         }
         OrderedTicket other = (OrderedTicket) object;
-        if ((this.orderedTicketPK == null && other.orderedTicketPK != null) || (this.orderedTicketPK != null && !this.orderedTicketPK.equals(other.orderedTicketPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -117,7 +119,7 @@ public class OrderedTicket implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.OrderedTicket[ orderedTicketPK=" + orderedTicketPK + " ]";
+        return "entity.OrderedTicket[ id=" + id + " ]";
     }
     
 }
