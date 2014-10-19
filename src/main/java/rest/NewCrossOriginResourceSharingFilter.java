@@ -5,6 +5,8 @@
  */
 package rest;
 
+import auth.AuthAccessElement;
+import java.util.Arrays;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
@@ -21,7 +23,10 @@ public class NewCrossOriginResourceSharingFilter implements ContainerResponseFil
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext response) {
         response.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
         response.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
-        response.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type");
+        String headers = "Content-Type";
+        headers = headers + ", " + AuthAccessElement.PARAM_AUTH_ID;
+        headers = headers + ", " + AuthAccessElement.PARAM_AUTH_TOKEN;
+        response.getHeaders().putSingle("Access-Control-Allow-Headers", headers);
     }
-    
+
 }
