@@ -26,7 +26,7 @@ import javax.ws.rs.ext.Provider;
  *
  * @author Notreal
  */
-@Provider
+//@Provider
 public class AuthSecurityInterceptor implements ContainerRequestFilter {
     
     private static final Response ACCESS_UNAUTHORIZED = Response.status(Response.Status.UNAUTHORIZED).entity("Not authorized.").build();

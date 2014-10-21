@@ -21,7 +21,7 @@ public class AuthAccessElement implements Serializable {
  
     private String authId;
     private String authToken;
-    private Set<String> authPermissionSet;
+    private Set<String> authPermission;
  
     public AuthAccessElement() {
     }
@@ -29,7 +29,7 @@ public class AuthAccessElement implements Serializable {
     public AuthAccessElement(String authId, String authToken, Set<String> authPermissionSet) {
         this.authId = authId;
         this.authToken = authToken;
-        this.authPermissionSet = authPermissionSet;
+        this.authPermission = authPermissionSet;
     }
 
     public String getAuthId() {
@@ -49,11 +49,11 @@ public class AuthAccessElement implements Serializable {
     }
 
     public Set<String> getAuthPermissionSet() {
-        return authPermissionSet;
+        return authPermission;
     }
 
     public void setAuthPermissionSet(Set<String> authPermissionSet) {
-        this.authPermissionSet = authPermissionSet;
+        this.authPermission = authPermissionSet;
     }
 
 }

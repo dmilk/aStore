@@ -58,6 +58,7 @@ public class UserREST {
     @Produces({"application/xml", "application/json"})
     @PermitAll
     public UserJson getUserInfo(@Context HttpServletRequest request) {
+        System.out.println("*********** getUserInfo() ***********");
         String authId = request.getHeader(AuthAccessElement.PARAM_AUTH_ID);
         String authToken = request.getHeader(AuthAccessElement.PARAM_AUTH_TOKEN);
         User user = userFacade.findByAuthIdAndAuthToken(authId, authToken);
