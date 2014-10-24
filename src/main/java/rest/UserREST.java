@@ -19,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import session.UserFacade;
 
 /**
@@ -42,14 +43,18 @@ public class UserREST {
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public AuthAccessElement login(@Context HttpServletRequest request, AuthInfo authInfo) {
+    public Response login(@Context HttpServletRequest request, AuthInfo authInfo) {
+//    public AuthAccessElement login(@Context HttpServletRequest request, AuthInfo authInfo) {
         System.out.println("authInfo = " + authInfo);
         AuthAccessElement authAccessElement = authService.login(authInfo);
         if (authAccessElement != null) {
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_ID, authAccessElement.getAuthId());
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_TOKEN, authAccessElement.getAuthToken());
+        } else {
+            return Response.status(Response.Status.FORBIDDEN).entity("XXX хуй вам!!!").build();
         }
-        return authAccessElement;
+//        return authAccessElement;
+        return Response.ok(authAccessElement).build();
     }
 
     @GET

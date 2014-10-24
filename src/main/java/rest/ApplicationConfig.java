@@ -28,11 +28,9 @@ public class ApplicationConfig extends Application {
         resources.add(rest.NewCrossOriginResourceSharingFilter.class);
         resources.add(rest.PurchaseREST.class);
         resources.add(rest.RouteREST.class);
-        resources.add(rest.TestInterceptor.class);
         resources.add(rest.TestREST.class);
         resources.add(rest.TicketREST.class);
         resources.add(rest.UserREST.class);
-        resources.add(rest.service.RouteFacadeREST.class);
     }
     
 }
