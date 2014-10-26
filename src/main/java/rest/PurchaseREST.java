@@ -41,10 +41,10 @@ public class PurchaseREST {
 
         int orderId = 0;
         orderId = orderManager.placeOrder(orderJson.firstName, orderJson.secondName, orderJson.email, orderJson.phone,
-                orderJson.routeId, convertJsonCart(orderJson.cart));
+                orderJson.userId, orderJson.routeId, convertJsonCart(orderJson.cart));
 
         Map orderMap = orderManager.getOrderDetails(orderId);
-        return new OrderConfirmationJson(((CustomerOrder) orderMap.get("orderRecord")).getConfirmationNumber());
+         return new OrderConfirmationJson(((CustomerOrder) orderMap.get("orderRecord")).getConfirmationNumber());
     }
 
     private ShoppingCart convertJsonCart(List<TicketJson> tickets) {
@@ -65,6 +65,7 @@ public class PurchaseREST {
         public String secondName;
         public String email;
         public String phone;
+        public int userId;
         public int routeId;
         public List<TicketJson> cart;
 

@@ -5,7 +5,6 @@
  */
 package auth;
 
-import entity.Customer;
 import entity.Role;
 import entity.User;
 import java.util.Collection;
@@ -28,10 +27,11 @@ public class AuthServiceBean implements AuthService {
 
     @Override
     public AuthAccessElement login(AuthInfo authInfo) {
+        
         User user = userFacade.findByLoginAndPassword(authInfo.getLogin(), authInfo.getPassword());
 
         if (user != null) {
-            user.setUuid(UUID.randomUUID().toString());
+            user.setToken(UUID.randomUUID().toString());
             userFacade.edit(user);
 
             Set<String> authPermissionSet = new HashSet<String>();
@@ -40,15 +40,15 @@ public class AuthServiceBean implements AuthService {
                 authPermissionSet.add(role.getName());
             }
 
-            return new AuthAccessElement(authInfo.getLogin(), user.getUuid(), authPermissionSet);
+            return new AuthAccessElement(user.getToken(), authPermissionSet);
         }
         return null;
     }
 
     @Override
-    public boolean isAuthorized(String authId, String authToken, Set<String> rolesAllowed) {
+    public boolean isAuthorized(String authToken, Set<String> rolesAllowed) {
 
-        User user = userFacade.findByAuthIdAndAuthToken(authId, authToken);
+        User user = userFacade.findByToken(authToken);
 
         if (user != null) {
             for (Role role : user.getRoleCollection()) {

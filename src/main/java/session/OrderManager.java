@@ -7,11 +7,11 @@ package session;
 
 import cart.ShoppingCart;
 import cart.ShoppingCartItem;
-import entity.Customer;
 import entity.CustomerOrder;
 import entity.OrderedTicket;
 import entity.Route;
 import entity.Ticket;
+import entity.User;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +47,9 @@ public class OrderManager {
     RouteFacade routeFacade;
     
     @EJB
+    UserFacade userFacade;
+    
+    @EJB
     CustomerOrderFacade customerOrderFacade;
     
     @EJB
@@ -56,11 +59,13 @@ public class OrderManager {
     TicketFacade ticketFacade;
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public int placeOrder(String firstName, String lastName, String email, String phone, int routeId, ShoppingCart cart) {
+    public int placeOrder(String firstName, String lastName, String email, String phone, int userId, int routeId, 
+            ShoppingCart cart) 
+    {
         try {
-            Customer customer = addCustomer(firstName, lastName, email, phone);
             Route route = routeFacade.find(routeId);
-            CustomerOrder customerOrder = addCustomerOrder(customer, route, cart);
+            User user = userFacade.find(userId);
+            CustomerOrder customerOrder = addCustomerOrder(firstName, lastName, email, phone, user, route, cart);
             addOrderedItems(customerOrder, cart);
             return customerOrder.getId();
         } catch (Exception e) {
@@ -70,24 +75,15 @@ public class OrderManager {
         }
     }
 
-    private Customer addCustomer(String firstName, String lastName, String email, String phone) {
-        Customer customer = new Customer();
-        customer.setFirstName(firstName);
-        customer.setLastName(lastName);
-        customer.setEmail(email);
-        customer.setPhone(phone);
-
-        em.persist(customer);
-        // to get auto-generated value
-//        em.flush();
-//        System.out.println("===CUTOMER_ID = " + customer.getId());
-        
-        return customer;
-    }
-    
-    private CustomerOrder addCustomerOrder(Customer customer, Route route, ShoppingCart cart) {
+    private CustomerOrder addCustomerOrder(String firstName, String lastName, String email, String phone, User user, 
+            Route route, ShoppingCart cart) 
+    {
         CustomerOrder customerOrder = new CustomerOrder();
-        customerOrder.setCustomer(customer);
+        customerOrder.setFirstName(firstName);
+        customerOrder.setLastName(lastName);
+        customerOrder.setEmail(email);
+        customerOrder.setPhone(phone);
+        customerOrder.setUser(user);
         customerOrder.setRoute(route);
         customerOrder.setAmount(BigDecimal.valueOf(cart.getTotal()));
         
@@ -96,8 +92,6 @@ public class OrderManager {
         customerOrder.setConfirmationNumber(confirmationNumber);
         
         em.persist(customerOrder);
-        
-//        em.flush();
         
         return customerOrder;
     }
@@ -123,8 +117,6 @@ public class OrderManager {
         
         CustomerOrder customerOrder = customerOrderFacade.find(orderId);
         
-        Customer customer = customerOrder.getCustomer();
-        
         List<OrderedTicket> orderedTickets = customerOrder.getOrderedTicketCollection();
         
         Route route = customerOrder.getRoute();
@@ -138,7 +130,6 @@ public class OrderManager {
         }
         
         orderMap.put("orderRecord", customerOrder);
-        orderMap.put("customer", customer);
         orderMap.put("route", route);
         orderMap.put("orderedTickets", orderedTickets);
         orderMap.put("tickets", tickets);

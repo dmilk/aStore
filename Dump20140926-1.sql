@@ -73,17 +73,17 @@ UNLOCK TABLES;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`ID`, `EMAIL`, `PASSWORD`, `UUID`, `FIRST_NAME`, `LAST_NAME`, `PHONE`, `ACTIVE`, `DATE_CREATED`) VALUES (1,'notreal@mail.ru','123','','Oleg','Sorokin','+7111222333',0,'2014-10-19 12:30:19');
-INSERT INTO `user` (`ID`, `EMAIL`, `PASSWORD`, `UUID`, `FIRST_NAME`, `LAST_NAME`, `PHONE`, `ACTIVE`, `DATE_CREATED`) VALUES (2,'oleg@setco.ru','123','','Олег','Сорокин','+74957755529',0,'2014-10-19 12:30:51');
+INSERT INTO `user` (`ID`, `EMAIL`, `FIRST_NAME`, `LAST_NAME`, `PHONE`, `ACTIVE`, `DATE_CREATED`) VALUES (0,'example@example.com','anonymous','anonumpus','0',0,'2014-10-19 00:00:00');
+INSERT INTO `user` (`ID`, `EMAIL`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `PHONE`, `ACTIVE`, `DATE_CREATED`) VALUES (1,'notreal@mail.ru','123','Oleg','Sorokin','+7111222333',0,'2014-10-19 12:30:19');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 LOCK TABLES `user_has_role` WRITE;
 /*!40000 ALTER TABLE `user_has_role` DISABLE KEYS */;
-INSERT INTO `user_has_role` (`USER_ID`, `ROLE_ID`) VALUES (1,1);
-INSERT INTO `user_has_role` (`USER_ID`, `ROLE_ID`) VALUES (1,2);
-INSERT INTO `user_has_role` (`USER_ID`, `ROLE_ID`) VALUES (2,2);
+ INSERT INTO `user_has_role` (`USER_ID`, `ROLE_ID`) VALUES (1,1);
+ INSERT INTO `user_has_role` (`USER_ID`, `ROLE_ID`) VALUES (1,2);
+-- INSERT INTO `user_has_role` (`USER_ID`, `ROLE_ID`) VALUES (2,2);
 /*!40000 ALTER TABLE `user_has_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

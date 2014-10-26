@@ -37,14 +37,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByUuid", query = "SELECT u FROM User u WHERE u.uuid = :uuid"),
+    @NamedQuery(name = "User.findBySalt", query = "SELECT u FROM User u WHERE u.salt = :salt"),
     @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName"),
     @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
     @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone"),
     @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active"),
     @NamedQuery(name = "User.findByDateCreated", query = "SELECT u FROM User u WHERE u.dateCreated = :dateCreated"),
-    // manual added
-    @NamedQuery(name = "User.findByEmailAndUuid", query = "SELECT u FROM User u WHERE u.email = :email and u.uuid = :uuid"),
+    @NamedQuery(name = "User.findByToken", query = "SELECT u FROM User u WHERE u.token = :token"),
+    @NamedQuery(name = "User.findBySessionKey", query = "SELECT u FROM User u WHERE u.sessionKey = :sessionKey"),
     @NamedQuery(name = "User.findByEmailAndPassword", query = "SELECT u FROM User u WHERE u.email = :email and u.password = :password")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -59,14 +59,12 @@ public class User implements Serializable {
     @Size(min = 1, max = 254)
     @Column(name = "EMAIL")
     private String email;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 64)
+    @Size(max = 64)
     @Column(name = "PASSWORD")
     private String password;
-    @Size(max = 36)
-    @Column(name = "UUID")
-    private String uuid;
+    @Size(max = 64)
+    @Column(name = "SALT")
+    private String salt;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -84,14 +82,18 @@ public class User implements Serializable {
     @Column(name = "PHONE")
     private String phone;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ACTIVE")
     private boolean active;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "DATE_CREATED")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
+    @Size(max = 64)
+    @Column(name = "TOKEN")
+    private String token;
+    @Size(max = 36)
+    @Column(name = "SESSION_KEY")
+    private String sessionKey;
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
 
@@ -102,10 +104,9 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String email, String password, String firstName, String lastName, String phone, boolean active, Date dateCreated) {
+    public User(Integer id, String email, String firstName, String lastName, String phone, boolean active, Date dateCreated) {
         this.id = id;
         this.email = email;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -137,12 +138,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getFirstName() {
@@ -183,6 +184,22 @@ public class User implements Serializable {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
     }
 
     @XmlTransient

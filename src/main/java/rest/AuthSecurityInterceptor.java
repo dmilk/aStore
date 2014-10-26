@@ -26,7 +26,7 @@ import javax.ws.rs.ext.Provider;
  *
  * @author Notreal
  */
-//@Provider
+@Provider
 public class AuthSecurityInterceptor implements ContainerRequestFilter {
     
     private static final Response ACCESS_UNAUTHORIZED = Response.status(Response.Status.UNAUTHORIZED).entity("Not authorized.").build();
@@ -42,7 +42,6 @@ public class AuthSecurityInterceptor implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        String authId = requestContext.getHeaderString(AuthAccessElement.PARAM_AUTH_ID);
         String authToken = requestContext.getHeaderString(AuthAccessElement.PARAM_AUTH_TOKEN);
         
         Method methodInvoked = resourceInfo.getResourceMethod();
@@ -51,7 +50,7 @@ public class AuthSecurityInterceptor implements ContainerRequestFilter {
             RolesAllowed rolesAllowedAnnotation = methodInvoked.getAnnotation(RolesAllowed.class);
             Set<String> rolesAllowed = new HashSet<>(Arrays.asList(rolesAllowedAnnotation.value()));
 
-            if (!authService.isAuthorized(authId, authToken, rolesAllowed)) {
+            if (!authService.isAuthorized(authToken, rolesAllowed)) {
                 requestContext.abortWith(ACCESS_UNAUTHORIZED);
             }
         }

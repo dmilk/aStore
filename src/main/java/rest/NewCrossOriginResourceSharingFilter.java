@@ -24,7 +24,6 @@ public class NewCrossOriginResourceSharingFilter implements ContainerResponseFil
         response.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
         response.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
         String headers = "Content-Type";
-        headers = headers + ", " + AuthAccessElement.PARAM_AUTH_ID;
         headers = headers + ", " + AuthAccessElement.PARAM_AUTH_TOKEN;
         response.getHeaders().putSingle("Access-Control-Allow-Headers", headers);
     }

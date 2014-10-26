@@ -7,7 +7,6 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -26,12 +25,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author OLEG
+ * @author Notreal
  */
 @Entity
 @Table(name = "customer_order")
@@ -41,7 +41,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "CustomerOrder.findById", query = "SELECT c FROM CustomerOrder c WHERE c.id = :id"),
     @NamedQuery(name = "CustomerOrder.findByAmount", query = "SELECT c FROM CustomerOrder c WHERE c.amount = :amount"),
     @NamedQuery(name = "CustomerOrder.findByDateCreated", query = "SELECT c FROM CustomerOrder c WHERE c.dateCreated = :dateCreated"),
-    @NamedQuery(name = "CustomerOrder.findByConfirmationNumber", query = "SELECT c FROM CustomerOrder c WHERE c.confirmationNumber = :confirmationNumber")})
+    @NamedQuery(name = "CustomerOrder.findByConfirmationNumber", query = "SELECT c FROM CustomerOrder c WHERE c.confirmationNumber = :confirmationNumber"),
+    @NamedQuery(name = "CustomerOrder.findByFirstName", query = "SELECT c FROM CustomerOrder c WHERE c.firstName = :firstName"),
+    @NamedQuery(name = "CustomerOrder.findByLastName", query = "SELECT c FROM CustomerOrder c WHERE c.lastName = :lastName"),
+    @NamedQuery(name = "CustomerOrder.findByEmail", query = "SELECT c FROM CustomerOrder c WHERE c.email = :email"),
+    @NamedQuery(name = "CustomerOrder.findByPhone", query = "SELECT c FROM CustomerOrder c WHERE c.phone = :phone")})
 public class CustomerOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,6 +59,7 @@ public class CustomerOrder implements Serializable {
     @Column(name = "AMOUNT")
     private BigDecimal amount;
     @Basic(optional = false)
+    //@NotNull
     @Column(name = "DATE_CREATED")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
@@ -62,12 +67,34 @@ public class CustomerOrder implements Serializable {
     @NotNull
     @Column(name = "CONFIRMATION_NUMBER")
     private int confirmationNumber;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "LAST_NAME")
+    private String lastName;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 254)
+    @Column(name = "EMAIL")
+    private String email;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "PHONE")
+    private String phone;
     @JoinColumn(name = "ROUTE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Route route;
-    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Customer customer;
+    private User user;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerOrder")
     private List<OrderedTicket> orderedTicketCollection;
 
@@ -78,11 +105,15 @@ public class CustomerOrder implements Serializable {
         this.id = id;
     }
 
-    public CustomerOrder(Integer id, BigDecimal amount, Date dateCreated, int confirmationNumber) {
+    public CustomerOrder(Integer id, BigDecimal amount, Date dateCreated, int confirmationNumber, String firstName, String lastName, String email, String phone) {
         this.id = id;
         this.amount = amount;
         this.dateCreated = dateCreated;
         this.confirmationNumber = confirmationNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
     }
 
     public Integer getId() {
@@ -117,6 +148,38 @@ public class CustomerOrder implements Serializable {
         this.confirmationNumber = confirmationNumber;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public Route getRoute() {
         return route;
     }
@@ -125,15 +188,15 @@ public class CustomerOrder implements Serializable {
         this.route = route;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
-
-    @XmlTransient
+    
+     @XmlTransient
     public List<OrderedTicket> getOrderedTicketCollection() {
         return orderedTicketCollection;
     }
