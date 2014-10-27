@@ -44,7 +44,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active"),
     @NamedQuery(name = "User.findByDateCreated", query = "SELECT u FROM User u WHERE u.dateCreated = :dateCreated"),
     @NamedQuery(name = "User.findByToken", query = "SELECT u FROM User u WHERE u.token = :token"),
-    @NamedQuery(name = "User.findBySessionKey", query = "SELECT u FROM User u WHERE u.sessionKey = :sessionKey"),
     @NamedQuery(name = "User.findByEmailAndPassword", query = "SELECT u FROM User u WHERE u.email = :email and u.password = :password")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -91,9 +90,6 @@ public class User implements Serializable {
     @Size(max = 64)
     @Column(name = "TOKEN")
     private String token;
-    @Size(max = 36)
-    @Column(name = "SESSION_KEY")
-    private String sessionKey;
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
 
@@ -192,14 +188,6 @@ public class User implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public String getSessionKey() {
-        return sessionKey;
-    }
-
-    public void setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
     }
 
     @XmlTransient
