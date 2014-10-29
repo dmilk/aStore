@@ -110,10 +110,8 @@ public class UserREST {
     @GET
     @Path("info")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//    @Produces({"application/xml", "application/json"})
     @PermitAll
     public UserJson getUserInfo(@Context HttpServletRequest request) {
-        System.out.println("*********** getUserInfo() ***********");
         String authToken = request.getHeader(AuthAccessElement.PARAM_AUTH_TOKEN);
         User user = userFacade.findByToken(authToken);
         if (user != null) {
