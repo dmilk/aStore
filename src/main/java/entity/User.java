@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,6 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByToken", query = "SELECT u FROM User u WHERE u.token = :token"),
     @NamedQuery(name = "User.findByEmailAndPassword", query = "SELECT u FROM User u WHERE u.email = :email and u.password = :password")})
 public class User implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -92,6 +95,8 @@ public class User implements Serializable {
     private String token;
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<CustomerOrder> customerOrderCollection;
 
     public User() {
     }
@@ -223,5 +228,14 @@ public class User implements Serializable {
     public String toString() {
         return "entity.User[ id=" + id + " ]";
     }
-    
+
+    @XmlTransient
+    public Collection<CustomerOrder> getCustomerOrderCollection() {
+        return customerOrderCollection;
+    }
+
+    public void setCustomerOrderCollection(Collection<CustomerOrder> customerOrderCollection) {
+        this.customerOrderCollection = customerOrderCollection;
+    }
+
 }

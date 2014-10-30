@@ -26,6 +26,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(rest.AuthSecurityInterceptor.class);
         resources.add(rest.CategoryREST.class);
+        resources.add(rest.CustomerOrderREST.class);
         resources.add(rest.NewCrossOriginResourceSharingFilter.class);
         resources.add(rest.PurchaseREST.class);
         resources.add(rest.RouteREST.class);

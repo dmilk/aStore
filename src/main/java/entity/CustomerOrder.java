@@ -34,19 +34,20 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Notreal
  */
 @Entity
-@Table(name = "customer_order")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "CustomerOrder.findAll", query = "SELECT c FROM CustomerOrder c"),
-    @NamedQuery(name = "CustomerOrder.findById", query = "SELECT c FROM CustomerOrder c WHERE c.id = :id"),
-    @NamedQuery(name = "CustomerOrder.findByAmount", query = "SELECT c FROM CustomerOrder c WHERE c.amount = :amount"),
-    @NamedQuery(name = "CustomerOrder.findByDateCreated", query = "SELECT c FROM CustomerOrder c WHERE c.dateCreated = :dateCreated"),
-    @NamedQuery(name = "CustomerOrder.findByConfirmationNumber", query = "SELECT c FROM CustomerOrder c WHERE c.confirmationNumber = :confirmationNumber"),
-    @NamedQuery(name = "CustomerOrder.findByFirstName", query = "SELECT c FROM CustomerOrder c WHERE c.firstName = :firstName"),
-    @NamedQuery(name = "CustomerOrder.findByLastName", query = "SELECT c FROM CustomerOrder c WHERE c.lastName = :lastName"),
-    @NamedQuery(name = "CustomerOrder.findByEmail", query = "SELECT c FROM CustomerOrder c WHERE c.email = :email"),
-    @NamedQuery(name = "CustomerOrder.findByPhone", query = "SELECT c FROM CustomerOrder c WHERE c.phone = :phone")})
+        @Table(name = "customer_order")
+        @XmlRootElement
+        @NamedQueries({
+            @NamedQuery(name = "CustomerOrder.findAll", query = "SELECT c FROM CustomerOrder c"),
+            @NamedQuery(name = "CustomerOrder.findById", query = "SELECT c FROM CustomerOrder c WHERE c.id = :id"),
+            @NamedQuery(name = "CustomerOrder.findByAmount", query = "SELECT c FROM CustomerOrder c WHERE c.amount = :amount"),
+            @NamedQuery(name = "CustomerOrder.findByDateCreated", query = "SELECT c FROM CustomerOrder c WHERE c.dateCreated = :dateCreated"),
+            @NamedQuery(name = "CustomerOrder.findByConfirmationNumber", query = "SELECT c FROM CustomerOrder c WHERE c.confirmationNumber = :confirmationNumber"),
+            @NamedQuery(name = "CustomerOrder.findByFirstName", query = "SELECT c FROM CustomerOrder c WHERE c.firstName = :firstName"),
+            @NamedQuery(name = "CustomerOrder.findByLastName", query = "SELECT c FROM CustomerOrder c WHERE c.lastName = :lastName"),
+            @NamedQuery(name = "CustomerOrder.findByEmail", query = "SELECT c FROM CustomerOrder c WHERE c.email = :email"),
+            @NamedQuery(name = "CustomerOrder.findByPhone", query = "SELECT c FROM CustomerOrder c WHERE c.phone = :phone")})
 public class CustomerOrder implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -195,8 +196,8 @@ public class CustomerOrder implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-    
-     @XmlTransient
+
+    @XmlTransient
     public List<OrderedTicket> getOrderedTicketCollection() {
         return orderedTicketCollection;
     }
@@ -229,5 +230,5 @@ public class CustomerOrder implements Serializable {
     public String toString() {
         return "entity.CustomerOrder[ id=" + id + " ]";
     }
-    
+
 }
