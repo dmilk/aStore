@@ -5,18 +5,23 @@
  */
 package rest;
 
+import auth.AuthAccessElement;
 import cart.ShoppingCart;
 import entity.CustomerOrder;
 import entity.Ticket;
+import entity.User;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import session.OrderManager;
 import session.TicketFacade;
+import session.UserFacade;
 
 /**
  * REST Web Service
@@ -31,17 +36,26 @@ public class PurchaseREST {
 
     @EJB
     private TicketFacade ticketFacade;
+    
+    @EJB
+    private UserFacade userFacade;
 
     @POST
     @Consumes({"application/json"})
     @Produces({"application/json"})
-    public OrderConfirmationJson placeOrder(OrderJson orderJson) {
+    public OrderConfirmationJson placeOrder(@Context HttpServletRequest request, OrderJson orderJson) {
         System.out.println("OrderJson\n");
         System.out.println(orderJson);
 
         int orderId = 0;
-        orderId = orderManager.placeOrder(orderJson.firstName, orderJson.secondName, orderJson.email, orderJson.phone,
-                orderJson.userId, orderJson.routeId, convertJsonCart(orderJson.cart));
+        int userId = 0;
+        String authToken = request.getHeader(AuthAccessElement.PARAM_AUTH_TOKEN);
+        User user = userFacade.findByToken(authToken);
+        if (user != null)
+            userId = user.getId();
+        
+        orderId = orderManager.placeOrder(orderJson.firstName, orderJson.lastName, orderJson.email, orderJson.phone,
+                userId, orderJson.routeId, convertJsonCart(orderJson.cart));
 
         Map orderMap = orderManager.getOrderDetails(orderId);
          return new OrderConfirmationJson(((CustomerOrder) orderMap.get("orderRecord")).getConfirmationNumber());
@@ -62,10 +76,10 @@ public class PurchaseREST {
     public static class OrderJson {
 
         public String firstName;
-        public String secondName;
+        public String lastName;
         public String email;
         public String phone;
-        public int userId;
+//        public int userId;
         public int routeId;
         public List<TicketJson> cart;
 

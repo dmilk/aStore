@@ -76,7 +76,7 @@ public class Ticket implements Serializable {
     private String dataLabel;
     @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Category categoryId;
+    private Category category;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ticket")
     private Collection<OrderedTicket> orderedTicketCollection;
 
@@ -143,12 +143,12 @@ public class Ticket implements Serializable {
         this.dataLabel = dataLabel;
     }
 
-    public Category getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @XmlTransient

@@ -43,7 +43,7 @@ public class Category implements Serializable {
     @Size(max = 45)
     @Column(name = "NAME")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Collection<Ticket> ticketCollection;
 
     public Category() {

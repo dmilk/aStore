@@ -117,6 +117,7 @@ public class CustomerOrder implements Serializable {
         this.phone = phone;
     }
 
+    @XmlTransient
     public Integer getId() {
         return id;
     }
@@ -189,6 +190,7 @@ public class CustomerOrder implements Serializable {
         this.route = route;
     }
 
+    @XmlTransient
     public User getUser() {
         return user;
     }

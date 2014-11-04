@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -65,6 +66,7 @@ public class OrderedTicket implements Serializable {
         this.ticketData = ticketData;
     }
 
+    @XmlTransient
     public Integer getId() {
         return id;
     }
@@ -81,6 +83,7 @@ public class OrderedTicket implements Serializable {
         this.ticketData = ticketData;
     }
 
+    @XmlTransient
     public CustomerOrder getCustomerOrder() {
         return customerOrder;
     }
