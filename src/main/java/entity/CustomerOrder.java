@@ -199,7 +199,7 @@ public class CustomerOrder implements Serializable {
         this.user = user;
     }
 
-    @XmlTransient
+//    @XmlTransient
     public List<OrderedTicket> getOrderedTicketCollection() {
         return orderedTicketCollection;
     }

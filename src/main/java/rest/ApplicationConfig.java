@@ -28,7 +28,6 @@ public class ApplicationConfig extends Application {
         resources.add(rest.CategoryREST.class);
         resources.add(rest.CustomerOrderREST.class);
         resources.add(rest.NewCrossOriginResourceSharingFilter.class);
-        resources.add(rest.OrderedTicketResource.class);
         resources.add(rest.PurchaseREST.class);
         resources.add(rest.RouteREST.class);
         resources.add(rest.TestREST.class);
