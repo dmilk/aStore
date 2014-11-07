@@ -6,7 +6,12 @@
 package rest;
 
 import auth.Salt;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Enumeration;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
@@ -17,6 +22,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import session.ReportManager;
 
 /**
  *
@@ -26,7 +33,23 @@ import javax.ws.rs.core.Response;
 @Path("test")
 public class TestREST {
 
+    @EJB
+    ReportManager reportManager;
+
     public TestREST() {
+    }
+
+    @GET
+    @Path("x")
+    @Produces(MediaType.MULTIPART_FORM_DATA)
+    public Response textExcel() throws FileNotFoundException, MessagingException, IOException {
+        
+        reportManager.generateExcel();
+
+        File file = new File("howtodoinjava_demo.xlsx");
+        ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition", "attachment; filename=excel_from_server.xlsx");
+        return response.build();
     }
 
     @GET
