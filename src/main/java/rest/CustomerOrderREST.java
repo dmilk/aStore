@@ -52,17 +52,6 @@ public class CustomerOrderREST {
         {
             return Collections.EMPTY_LIST;
         }
-        
-//        if (user != null) {
-//            Collection<CustomerOrder> customerOrderCollection = user.getCustomerOrderCollection();
-//            if (customerOrderCollection.isEmpty()) {
-//                return Collections.EMPTY_LIST;
-//            } else {
-//                return new ArrayList(customerOrderCollection);
-//            }
-//        } else {
-//            return Collections.EMPTY_LIST;
-//        }
     }
     
 }

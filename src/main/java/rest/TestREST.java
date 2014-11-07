@@ -7,9 +7,13 @@ package rest;
 
 import auth.Salt;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -44,10 +48,11 @@ public class TestREST {
     @Produces(MediaType.MULTIPART_FORM_DATA)
     public Response textExcel() throws FileNotFoundException, MessagingException, IOException {
         
-        reportManager.generateExcel();
-
-        File file = new File("howtodoinjava_demo.xlsx");
-        ResponseBuilder response = Response.ok((Object) file);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        reportManager.generateExcel(baos);
+        byte[] data = baos.toByteArray();
+        baos.close();
+        ResponseBuilder response = Response.ok(data);
         response.header("Content-Disposition", "attachment; filename=excel_from_server.xlsx");
         return response.build();
     }

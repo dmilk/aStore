@@ -6,8 +6,10 @@
 package session;
 
 import entity.CustomerOrder;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,11 +32,10 @@ public class ReportManager {
     CustomerOrderFacade customerOrderFacade;
 
 //    public void generateExcel() {
-    public void generateExcel() {
+    public void generateExcel(OutputStream outputStream) {
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         XSSFSheet sheet = workbook.createSheet("Order Data");
-        
 
         Integer i = 1;
         Map<String, Object[]> data = new TreeMap<String, Object[]>();
@@ -53,11 +54,6 @@ public class ReportManager {
             });
         }
         
-//        data.put("2", new Object[]{1, "Amit", "Shukla"});
-//        data.put("3", new Object[]{2, "Lokesh", "Gupta"});
-//        data.put("4", new Object[]{3, "John", "Adwards"});
-//        data.put("5", new Object[]{4, "Brian", "Schultz"});
-
         //Iterate over data and write to sheet
         Set<String> keyset = data.keySet();
         int rownum = 0;
@@ -75,11 +71,8 @@ public class ReportManager {
             }
         }
         try {
-            //Write the workbook in file system
-            FileOutputStream out = new FileOutputStream(new File("howtodoinjava_demo.xlsx"));
-            workbook.write(out);
-            out.close();
-            System.out.println("howtodoinjava_demo.xlsx written successfully on disk.");
+            workbook.write(outputStream);
+            outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
