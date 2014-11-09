@@ -6,7 +6,9 @@
 package session;
 
 import auth.Salt;
+import entity.Role;
 import entity.User;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -65,6 +67,11 @@ public class UserFacade extends AbstractFacade<User> {
 
                 Salt salt = new Salt();
                 user.setSalt(salt.toString());
+
+                Collection<Role> roles = em.createNamedQuery("Role.findByName", Role.class)
+                        .setParameter("name", "user")
+                        .getResultList();
+                user.setRoleCollection(roles);
 
                 em.persist(user);
                 return salt;

@@ -6,20 +6,22 @@
 package session;
 
 import entity.CustomerOrder;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -27,25 +29,23 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 @Stateless
 public class ReportManager {
-    
+
     @EJB
     CustomerOrderFacade customerOrderFacade;
 
-//    public void generateExcel() {
     public void generateExcel(OutputStream outputStream) {
-        XSSFWorkbook workbook = new XSSFWorkbook();
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("Order Data");
 
-        XSSFSheet sheet = workbook.createSheet("Order Data");
+        Integer i = 0;
+        Map<Integer, Object[]> data = new TreeMap<Integer, Object[]>();
+        data.put(i++, new Object[]{"N", "NAME", "LAST NAME", "E-MAIL", "AMOUNT", "DATE"});
 
-        Integer i = 1;
-        Map<String, Object[]> data = new TreeMap<String, Object[]>();
-        data.put((i++).toString(), new Object[]{"N", "NAME", "LAST NAME", "E-MAIL", "AMOUNT", "DATE"});
-        
         List<CustomerOrder> customerOrders = customerOrderFacade.findAll();
 
-        for(CustomerOrder customerOrder : customerOrders) {
-            data.put(i.toString(), new Object[] {
-                i++, 
+        for (CustomerOrder customerOrder : customerOrders) {
+            data.put(i++, new Object[]{
+                i - 1,
                 customerOrder.getFirstName(),
                 customerOrder.getLastName(),
                 customerOrder.getEmail(),
@@ -53,12 +53,11 @@ public class ReportManager {
                 customerOrder.getDateCreated()
             });
         }
-        
-        //Iterate over data and write to sheet
-        Set<String> keyset = data.keySet();
+
+        Set<Integer> keyset = data.keySet();
         int rownum = 0;
-        for (String key : keyset) {
-            XSSFRow row = sheet.createRow(rownum++);
+        for (Integer key : keyset) {
+            HSSFRow row = sheet.createRow(rownum++);
             Object[] objArr = data.get(key);
             int cellnum = 0;
             for (Object obj : objArr) {
@@ -67,6 +66,16 @@ public class ReportManager {
                     cell.setCellValue((String) obj);
                 } else if (obj instanceof Integer) {
                     cell.setCellValue((Integer) obj);
+                } else if (obj instanceof Double) {
+                    cell.setCellValue((Double) obj);
+                } else if (obj instanceof Date) {
+                    HSSFCellStyle cellStyle = workbook.createCellStyle();
+                    cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("d-mmm-yy"));
+                    cell.setCellValue((Date) obj);
+                    cell.setCellStyle(cellStyle);
+                } else if (obj instanceof BigDecimal) {
+                    BigDecimal bigDecimal = (BigDecimal) obj;
+                    cell.setCellValue(bigDecimal.doubleValue());
                 }
             }
         }

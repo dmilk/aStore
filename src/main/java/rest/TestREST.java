@@ -5,16 +5,14 @@
  */
 package rest;
 
+import auth.GoatsAllowed;
 import auth.Salt;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.json.Json;
@@ -27,6 +25,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.SecurityContext;
 import session.ReportManager;
 
 /**
@@ -36,7 +35,11 @@ import session.ReportManager;
 @Stateless
 @Path("test")
 public class TestREST {
-
+    private static final Logger LOG = Logger.getLogger(TestREST.class.getName());
+    
+    @Context
+    SecurityContext securityContext;
+ 
     @EJB
     ReportManager reportManager;
 
@@ -44,17 +47,36 @@ public class TestREST {
     }
 
     @GET
+    @Path("s")
+    public String getUserPrincipal() {
+        return securityContext.getUserPrincipal().getName();
+    }
+
+
+    @GET
     @Path("x")
     @Produces(MediaType.MULTIPART_FORM_DATA)
-    public Response textExcel() throws FileNotFoundException, MessagingException, IOException {
+    public Response textExcel() {
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         reportManager.generateExcel(baos);
         byte[] data = baos.toByteArray();
-        baos.close();
+        try {
+            baos.close();
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
         ResponseBuilder response = Response.ok(data);
-        response.header("Content-Disposition", "attachment; filename=excel_from_server.xlsx");
+        Date date = new Date();
+        response.header("Content-Disposition", "attachment; filename=report_" + date + ".xls");
         return response.build();
+    }
+    
+    @GET
+    @Path("am")
+    @GoatsAllowed("user")
+    public String testKavkazManager() {
+        return "success Kavkaz Manager";
     }
 
     @GET

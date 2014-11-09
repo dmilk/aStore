@@ -12,6 +12,7 @@ import entity.OrderedTicket;
 import entity.Route;
 import entity.Ticket;
 import entity.User;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,7 +126,6 @@ public class OrderManager {
        
         for (OrderedTicket orderedTicket:  orderedTickets) {
             Ticket ticket = orderedTicket.getTicket();
-//            Ticket ticket = ticketFacade.find(orderedTicket.getOrderedTicketPK().getTicketId());
             tickets.add(ticket);
         }
         

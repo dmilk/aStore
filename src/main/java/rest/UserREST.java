@@ -10,6 +10,8 @@ import auth.AuthInfo;
 import auth.AuthService;
 import auth.Salt;
 import entity.User;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +33,7 @@ import session.UuidBean;
  */
 @Path("user")
 public class UserREST {
+    private static final Logger LOG = Logger.getLogger(UserREST.class.getName());
 
     @EJB
     AuthService authService;
@@ -50,15 +53,14 @@ public class UserREST {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response signup(UserJson userJson) {
-        System.out.println(userJson);
+        LOG.log(Level.INFO, null, userJson);
         Salt salt = userFacade.createUser(userJson.getFirstName(), userJson.getLastName(),
                 userJson.getEmail(), userJson.getPhone());
 
-        System.out.println("Signup = " + userJson);
         if (salt != null) {
             return Response.ok(salt).build();
         } else {
-            System.err.println("email already exist");
+            LOG.log(Level.WARNING, "can't get the salt");
             return Response.status(Response.Status.FORBIDDEN).entity("email already exist").build();
         }
     }
@@ -69,7 +71,6 @@ public class UserREST {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response setPassword(PasswordJson passwordJson) {
-        System.out.println(passwordJson);
         if (userFacade.setUserPassword(passwordJson.getLogin(), passwordJson.getPassword())) {
             return Response.ok().build();
         } else {
@@ -83,8 +84,6 @@ public class UserREST {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSalt(@QueryParam("email") String email) {
-
-        System.out.println("getSalt = " + email);
         Salt salt = userFacade.getSalt(email);
         return Response.ok(salt).build();
     }
@@ -95,15 +94,12 @@ public class UserREST {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@Context HttpServletRequest request, AuthInfo authInfo) {
-        System.out.println("authInfo = " + authInfo);
-
         AuthAccessElement authAccessElement = authService.login(authInfo);
         if (authAccessElement != null) {
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_TOKEN, authAccessElement.getAuthToken());
         } else {
             return Response.status(Response.Status.FORBIDDEN).entity("XX фиг вам!!!").build();
         }
-//        return authAccessElement;
         return Response.ok(authAccessElement).build();
     }
 
@@ -129,7 +125,6 @@ public class UserREST {
     @PermitAll
     public String getUuid() {
         return uuidBean.getUuid();
-
     }
 
     public static class UserJson {

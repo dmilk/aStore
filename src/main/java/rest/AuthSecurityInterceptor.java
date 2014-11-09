@@ -7,6 +7,7 @@ package rest;
 
 import auth.AuthAccessElement;
 import auth.AuthService;
+import auth.GoatsAllowed;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -46,8 +47,10 @@ public class AuthSecurityInterceptor implements ContainerRequestFilter {
         
         Method methodInvoked = resourceInfo.getResourceMethod();
 
-        if (methodInvoked.isAnnotationPresent(RolesAllowed.class)) {
-            RolesAllowed rolesAllowedAnnotation = methodInvoked.getAnnotation(RolesAllowed.class);
+//        if (methodInvoked.isAnnotationPresent(RolesAllowed.class)) {
+        if (methodInvoked.isAnnotationPresent(GoatsAllowed.class)) {
+//            RolesAllowed rolesAllowedAnnotation = methodInvoked.getAnnotation(RolesAllowed.class);
+            GoatsAllowed rolesAllowedAnnotation = methodInvoked.getAnnotation(GoatsAllowed.class);
             Set<String> rolesAllowed = new HashSet<>(Arrays.asList(rolesAllowedAnnotation.value()));
 
             if (!authService.isAuthorized(authToken, rolesAllowed)) {
