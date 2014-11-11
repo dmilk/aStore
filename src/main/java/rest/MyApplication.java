@@ -5,9 +5,8 @@
  */
 package rest;
 
+import filter.NewCrossOriginResourceSharingFilter;
 import javax.ws.rs.ApplicationPath;
-import org.glassfish.jersey.jsonp.JsonProcessingFeature;
-import org.glassfish.jersey.message.filtering.SecurityEntityFilteringFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 /**
@@ -18,7 +17,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class MyApplication extends ResourceConfig {
     public MyApplication() {
         packages("rest");
-        register(SecurityEntityFilteringFeature.class);
-        register(JsonProcessingFeature.class);
+        register(NewCrossOriginResourceSharingFilter.class);
+//        register(SecurityEntityFilteringFeature.class);
     }
 }

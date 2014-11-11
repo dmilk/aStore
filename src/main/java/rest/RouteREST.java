@@ -7,7 +7,6 @@ package rest;
 
 import entity.Route;
 import java.util.List;
-import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -19,7 +18,6 @@ import session.RouteFacade;
  *
  * @author OLEG
  */
-@PermitAll
 @Path("route")
 public class RouteREST {
     

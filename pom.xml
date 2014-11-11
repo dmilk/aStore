@@ -14,6 +14,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache.poi.version>3.10.1</apache.poi.version>
+        <jersey.version>2.13</jersey.version>
     </properties>
     
     <dependencies>
@@ -38,19 +39,13 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>2.9.1</version>
-            <type>jar</type>
+            <version>${jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.ext</groupId>
             <artifactId>jersey-entity-filtering</artifactId>
-            <version>2.9.1</version>
+            <version>${jersey.version}</version>
         </dependency>
-        <dependency>
-    <groupId>org.glassfish.jersey.media</groupId>
-    <artifactId>jersey-media-json-processing</artifactId>
-    <version>2.9.1</version>
-</dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -73,10 +68,6 @@
             <artifactId>log4j</artifactId>
             <version>1.2.13</version>
         </dependency>-->
-
-
-
-        
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -87,7 +78,6 @@
             <artifactId>poi-ooxml</artifactId>
             <version>${apache.poi.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>

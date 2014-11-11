@@ -25,7 +25,6 @@ import session.TicketFacade;
  *
  * @author OLEG
  */
-@Stateless
 @Path("ticket")
 public class TicketREST {
     

@@ -25,7 +25,6 @@ import session.UserFacade;
  *
  * @author Notreal
  */
-@Stateless
 @Path("order")
 public class CustomerOrderREST {
 
