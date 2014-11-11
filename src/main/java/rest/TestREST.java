@@ -58,9 +58,9 @@ public class TestREST {
     
     @GET
     @Path("r")
-    @RolesAllowed({"usr"})
+    @RolesAllowed({"user"})
     public String testRole() {
-        System.out.println("role usr");
+        System.out.println("role user");
         //List<Route> routes = routeFacade.findAll();
         //System.out.println(routes);
         return "routes";
@@ -68,20 +68,20 @@ public class TestREST {
     
     @GET
     @Path("am")
-//    @RolesAllowed({"usr"})
-//    @Produces(MediaType.APPLICATION_JSON)
-    public Cat testRoleAm() {
-        System.out.println("testRoleAm");
-        List<Route> routes = routeFacade.findAll();
+    @RolesAllowed({"user"})
+    public Route testRoleAm() {
+//        System.out.println("testRoleAm");
+//        List<Route> routes = routeFacade.findAll();
+        //хуй
         Route route = routeFacade.find(1);
-        System.out.println(routes);
-        JsonObjectBuilder builder = Json.createObjectBuilder();
-        builder.add("route", route.getName());
-        Cat cat = new Cat();
-        cat.setName("Kitty");
-        cat.setAge(3);
-        System.out.println("cat = " + cat);
-        return cat;
+//        System.out.println(routes);
+//        JsonObjectBuilder builder = Json.createObjectBuilder();
+//        builder.add("route", route.getName());
+//        Cat cat = new Cat();
+//        cat.setName("Kitty");
+//        cat.setAge(3);
+//        System.out.println("cat = " + cat);
+        return route;
     }    
     
     @GET

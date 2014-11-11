@@ -5,12 +5,15 @@
  */
 package rest;
 
+import auth.AuthAccessElement;
+import auth.AuthService;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -25,40 +28,38 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 public class AuthSecurityInterceptor implements ContainerRequestFilter {
- 
-    // 401 - Access denied
-    private static final Response ACCESS_UNAUTHORIZED = Response.status(Response.Status.UNAUTHORIZED).entity("Not authorized.").build();
- 
-//    @EJB
-//    AuthService authService;
- 
+
+    @EJB
+    AuthService authService;
+
     @Context
     private HttpServletRequest request;
- 
+
     @Context
     private ResourceInfo resourceInfo;
- 
+
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         // Get AuthId and AuthToken from HTTP-Header.
 //        String authId = requestContext.getHeaderString(AuthAccessElement.PARAM_AUTH_ID);
 //        String authToken = requestContext.getHeaderString(AuthAccessElement.PARAM_AUTH_TOKEN);
- 
+        String authToken = requestContext.getHeaderString(AuthAccessElement.PARAM_AUTH_TOKEN);
+
         // Get method invoked.
         Method methodInvoked = resourceInfo.getResourceMethod();
- 
+
         if (methodInvoked.isAnnotationPresent(RolesAllowed.class)) {
             RolesAllowed rolesAllowedAnnotation = methodInvoked.getAnnotation(RolesAllowed.class);
             Set<String> rolesAllowed = new HashSet<>(Arrays.asList(rolesAllowedAnnotation.value()));
             //System.out.println(rolesAllowed);
- 
-            if (!rolesAllowed.contains("usr")) {
-//            if (!authService.isAuthorized(authId, authToken, rolesAllowed)) {
-                //requestContext.abortWith(ACCESS_UNAUTHORIZED);
+
+//            if (!rolesAllowed.contains("user")) {
+            boolean authorized = authService.isAuthorized(authToken, rolesAllowed);
+            if (!authorized) {
                 requestContext.abortWith(Response
-                    .status(Response.Status.UNAUTHORIZED)
-                    .entity("User cannot access the resource.")
-                    .build());
+                        .status(Response.Status.UNAUTHORIZED)
+                        .entity("User cannot access the resource.")
+                        .build());
             }
         }
     }
