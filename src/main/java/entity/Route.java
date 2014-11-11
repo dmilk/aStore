@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.annotation.security.PermitAll;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,6 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author OLEG
  */
+@PermitAll
 @Entity
 @Table(name = "route")
 @XmlRootElement

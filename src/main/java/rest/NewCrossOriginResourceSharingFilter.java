@@ -6,10 +6,10 @@
 package rest;
 
 import auth.AuthAccessElement;
-import java.util.Arrays;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.ext.Provider;
 
 /**
@@ -17,6 +17,7 @@ import javax.ws.rs.ext.Provider;
  * @author Notreal
  */
 @Provider
+@PreMatching
 public class NewCrossOriginResourceSharingFilter implements ContainerResponseFilter {
 
     @Override
