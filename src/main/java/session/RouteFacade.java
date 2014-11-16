@@ -6,6 +6,7 @@
 package session;
 
 import entity.Route;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +23,10 @@ public class RouteFacade extends AbstractFacade<Route> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
     public RouteFacade() {

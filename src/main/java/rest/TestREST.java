@@ -8,10 +8,10 @@ package rest;
 import auth.Cat;
 import entity.Route;
 import java.util.Enumeration;
-import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,6 @@ import session.RouteFacade;
  *
  * @author OLEG
  */
-
 @Path("test")
 public class TestREST {
     
@@ -70,17 +69,7 @@ public class TestREST {
     @Path("am")
     @RolesAllowed({"user"})
     public Route testRoleAm() {
-//        System.out.println("testRoleAm");
-//        List<Route> routes = routeFacade.findAll();
-        //хуй
         Route route = routeFacade.find(1);
-//        System.out.println(routes);
-//        JsonObjectBuilder builder = Json.createObjectBuilder();
-//        builder.add("route", route.getName());
-//        Cat cat = new Cat();
-//        cat.setName("Kitty");
-//        cat.setAge(3);
-//        System.out.println("cat = " + cat);
         return route;
     }    
     

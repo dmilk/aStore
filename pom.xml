@@ -15,9 +15,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache.poi.version>3.10.1</apache.poi.version>
         <jersey.version>2.13</jersey.version>
+        <glassfish.embedded-static-shell.jar>c:/dev/glassfish-4.1/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
     </properties>
     
     <dependencies>
+
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
@@ -47,27 +49,32 @@
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.main.extras</groupId>
+            <artifactId>glassfish-embedded-static-shell</artifactId>
+            <version>4.1</version>
+            <scope>system</scope>
+            <systemPath>${glassfish.embedded-static-shell.jar}</systemPath>
+        </dependency>
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+
+        
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-        
-        <!--        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.13</version>
-        </dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -79,7 +86,6 @@
             <version>${apache.poi.version}</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

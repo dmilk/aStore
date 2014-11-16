@@ -110,7 +110,7 @@ public class Route implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Route[ id=" + id + " ]";
+        return "Route{" + "id=" + id + ", name=" + name + '}';
     }
     
 }
