@@ -33,4 +33,9 @@ public class RouteFacade extends AbstractFacade<Route> {
         super(Route.class);
     }
     
+    public int testMethod() {
+        return 13;
+        
+    }
+    
 }
