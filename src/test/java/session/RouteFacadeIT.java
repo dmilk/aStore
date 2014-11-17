@@ -6,7 +6,10 @@
 package session;
 
 import entity.Route;
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.embeddable.EJBContainer;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -29,7 +32,11 @@ public class RouteFacadeIT {
 
     @BeforeClass
     public static void setUpClass() {
-        container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put(EJBContainer.MODULES, new File("target/classes"));
+        properties.put("installation.root", "./src/test/glassfish");
+        properties.put("configuration.file", "./src/test/glassfish/domains/domain1/config/domain.xml");
+        container = javax.ejb.embeddable.EJBContainer.createEJBContainer(properties);
         System.out.println("Opening the container");
 
     }
@@ -105,7 +112,7 @@ public class RouteFacadeIT {
         System.out.println("find");
         Object id = 1;
         RouteFacade instance = (RouteFacade) container.getContext().lookup("java:global/classes/RouteFacade");
-        String expName = "kavkaz_krym"; 
+        String expName = "kavkaz_krym";
         Route result = instance.find(id);
         System.out.println("result: " + result);
         assertEquals(expName, result.getName());
