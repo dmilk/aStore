@@ -83,7 +83,6 @@ public class ReportManager {
             workbook.write(outputStream);
             outputStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

@@ -11,7 +11,6 @@ import java.util.Enumeration;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +41,12 @@ public class TestREST {
         }
 
         return builder.build().toString();
+    }
+    
+    @GET
+    @Path("t")
+    public String testT() {
+        return "Hello";
     }
     
     @GET
