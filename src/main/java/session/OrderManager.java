@@ -12,7 +12,6 @@ import entity.OrderedTicket;
 import entity.Route;
 import entity.Ticket;
 import entity.User;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;

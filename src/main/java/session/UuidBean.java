@@ -7,12 +7,13 @@ package session;
 
 import java.util.UUID;
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author Notreal
  */
-@Stateful
+@Stateless
 public class UuidBean {
     private String uuid;
 
@@ -23,11 +24,4 @@ public class UuidBean {
     public String getUuid() {
         return uuid;
     }
-    
-    
-
-    
-    
-    
-
 }

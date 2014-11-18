@@ -7,6 +7,7 @@ package session;
 
 import entity.Route;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.ejb.embeddable.EJBContainer;
 import javax.persistence.EntityManager;
@@ -33,8 +34,14 @@ import static org.mockito.Mockito.when;
  */
 public class RouteFacadeTest {
 
-    private RouteFacade routeFacade = new RouteFacade();
-    
+    private RouteFacade routeFacade;
+    private EntityManager em;
+    private Route route;
+    private List<Route> routeList;
+    private CriteriaBuilder criteriaBuilder;
+    private javax.persistence.criteria.CriteriaQuery criteriaQuery;
+    private TypedQuery<Route> typedQuery;
+
     public RouteFacadeTest() {
     }
 
@@ -48,11 +55,26 @@ public class RouteFacadeTest {
 
     @Before
     public void setUp() {
-        EntityManager em = mock(EntityManager.class);
+        em = mock(EntityManager.class);
+        routeFacade = new RouteFacade();
         routeFacade.setEm(em);
-        //routeFacade = new RouteFacade();
-        //em = mock(EntityManager.class);
-        //routeFacade.setEm(em);
+        
+        criteriaBuilder = mock(CriteriaBuilder.class);
+        when(em.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        
+        criteriaQuery = mock(javax.persistence.criteria.CriteriaQuery.class);
+        when(em.getCriteriaBuilder().createQuery()).thenReturn(criteriaQuery);
+        
+        typedQuery = mock(TypedQuery.class);
+        when(em.createQuery(criteriaQuery)).thenReturn(typedQuery);
+        
+        route = new Route();
+        routeList = new ArrayList<>(Arrays.asList(
+                new Route(1),
+                new Route(2),
+                new Route(3)
+        ));
+        
     }
 
     @After
@@ -66,155 +88,62 @@ public class RouteFacadeTest {
      */
     @Test
     public void testCreate() throws Exception {
-        //assertEquals(13, routeFacade.testMethod());
-        Route route = new Route(1);
-        //Query mockQuery = mock(Query.class);
-        //when(mockQuery.getSingleResult()).thenReturn(route);
-        when(routeFacade.getEntityManager().find(Route.class, 1)).thenReturn(route);
-        assertEquals(route, routeFacade.find(1));
-        
-//        when(routeFacade.getEntityManager().createNamedQuery(Matchers.anyString())).thenReturn(mockQuery);
-//        Route dummyResult = routeFacade.find(1);
-//
-//        List<Route> expResult = new ArrayList<Route>();
-//        Query mockQuery = getQueryThatReturnsList(expResult);
-//
-//        when(routeFacade.getEntityManager().createNamedQuery(Matchers.anyString())).thenReturn(mockQuery);
-//
-//        System.out.println("assertEquals");
-//        List<Route> dummyResult = routeFacade.findAll();
-//        assertEquals(expResult, routeFacade.findAll());
-
-//        Query query = mock(Query.class);
-//        when(em.createNamedQuery("Route.findAll")).thenReturn(query);
-//        List<Route> dummyResult = new ArrayList<Route>();
-//        when(query.getResultList()).thenReturn(dummyResult);
-//        List<Route> expResult = routeFacade.findAll();
-//        verify(em).createNamedQuery("Role.findAll", Route.class);
-//        verify(query).getResultList();
-//        assertSame(dummyResult, expResult);
-    }
-
-    private Query getQueryThatReturnsList(List list) {
-        Query mockQuery = mock(Query.class);
-        when(mockQuery.getResultList()).thenReturn(list);
-        return mockQuery;
+        routeFacade.create(route);
+        verify(em).persist(route);
     }
 
     /**
      * Test of edit method, of class RouteFacade.
      */
-    @Ignore
     @Test
     public void testEdit() throws Exception {
-        System.out.println("edit");
-        Route entity = null;
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        RouteFacade instance = (RouteFacade) container.getContext().lookup("java:global/classes/RouteFacade");
-        instance.edit(entity);
-        container.close();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        routeFacade.edit(route);
+        verify(em).merge(route);
     }
 
     /**
      * Test of remove method, of class RouteFacade.
      */
-    @Ignore
     @Test
     public void testRemove() throws Exception {
-        System.out.println("remove");
-        Route entity = null;
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        RouteFacade instance = (RouteFacade) container.getContext().lookup("java:global/classes/RouteFacade");
-        instance.remove(entity);
-        container.close();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        routeFacade.remove(route);
+        verify(em).remove(em.merge(route));
     }
 
     /**
      * Test of find method, of class RouteFacade.
      */
-    
     @Test
     public void testFind() throws Exception {
-        EntityManager em = routeFacade.getEntityManager();
-        Route route = new Route(7);
-        
-        when(em.find(Route.class, 7)).thenReturn(route);
+        Route newRoute = new Route(7);
+
+        when(em.find(Route.class, 7)).thenReturn(newRoute);
         Route expResult = em.find(Route.class, 7);
-        
+
         verify(em).find(Route.class, 7);
-        assertEquals(expResult, route);
+        assertEquals(expResult, newRoute);
     }
 
     /**
      * Test of findAll method, of class RouteFacade.
      */
-    
     @Test
     public void testFindAll() throws Exception {
         EntityManager em = routeFacade.getEntityManager();
-        
+
         List<Route> list = new ArrayList<>();
         list.add(new Route());
         list.add(new Route());
-        
-        CriteriaBuilder cb = mock(CriteriaBuilder.class);
-        when(em.getCriteriaBuilder()).thenReturn(cb);
-        
-        javax.persistence.criteria.CriteriaQuery cq = mock(javax.persistence.criteria.CriteriaQuery.class);
-        when(em.getCriteriaBuilder().createQuery()).thenReturn(cq);
-        
-        TypedQuery<Route> tq = mock(TypedQuery.class);
-        when(em.createQuery(cq)).thenReturn(tq);
-        
-        when(em.createQuery(cq).getResultList()).thenReturn(list);
-        
+
+        when(em.createQuery(criteriaQuery).getResultList()).thenReturn(list);
+
         List<Route> expResult = routeFacade.findAll();
         System.out.println(expResult);
         verify(em, times(2)).getCriteriaBuilder();
-        verify(cb).createQuery();
-        verify(em, times(2)).createQuery(cq);
-        
-        verify(tq).getResultList();
+        verify(criteriaBuilder).createQuery();
+        verify(em, times(2)).createQuery(criteriaQuery);
+
+        verify(typedQuery).getResultList();
         assertEquals(expResult, list);
     }
-
-    /**
-     * Test of findRange method, of class RouteFacade.
-     */
-    @Ignore
-    @Test
-    public void testFindRange() throws Exception {
-        System.out.println("findRange");
-        int[] range = null;
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        RouteFacade instance = (RouteFacade) container.getContext().lookup("java:global/classes/RouteFacade");
-        List<Route> expResult = null;
-        List<Route> result = instance.findRange(range);
-        assertEquals(expResult, result);
-        container.close();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of count method, of class RouteFacade.
-     */
-    @Test
-    @Ignore
-    public void testCount() throws Exception {
-        System.out.println("count");
-        EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-        RouteFacade instance = (RouteFacade) container.getContext().lookup("java:global/classes/RouteFacade");
-        int expResult = 0;
-        int result = instance.count();
-        assertEquals(expResult, result);
-        container.close();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
 }
