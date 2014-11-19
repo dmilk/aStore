@@ -16,6 +16,10 @@
         <apache.poi.version>3.10.1</apache.poi.version>
         <jersey.version>2.13</jersey.version>
         <glassfish.embedded-static-shell.jar>c:/dev/glassfish-4.1/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
+        <skipTests>false</skipTests>
+        <testContainerFactory>org.glassfish.jersey.test.external.ExternalTestContainerFactory</testContainerFactory>
+        <testContainerPort>8080</testContainerPort>
+
     </properties>
     
     <dependencies>
@@ -67,10 +71,25 @@
             <systemPath>${glassfish.embedded-static-shell.jar}</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-grizzly2-http</artifactId>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-moxy</artifactId>
             <version>${jersey.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework</groupId>
+            <artifactId>jersey-test-framework-core</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-external</artifactId>
+            <version>2.14-SNAPSHOT</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+            <version>${jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -136,7 +155,18 @@
                     </execution>
                 </executions>
             </plugin>
+            
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                    <systemPropertyVariables>
+                        <jersey.config.test.container.factory>${testContainerFactory}</jersey.config.test.container.factory>
+                        <jersey.config.test.container.port>${testContainerPort}</jersey.config.test.container.port>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
+    
 </project>
