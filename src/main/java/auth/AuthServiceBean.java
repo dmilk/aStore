@@ -34,7 +34,7 @@ public class AuthServiceBean implements AuthService {
             user.setToken(UUID.randomUUID().toString());
             userFacade.edit(user);
 
-            Set<String> authPermissionSet = new HashSet<String>();
+            Set<String> authPermissionSet = new HashSet<>();
             Collection<Role> roles = user.getRoleCollection();
             for (Role role : roles) {
                 authPermissionSet.add(role.getName());

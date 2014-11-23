@@ -110,6 +110,7 @@ public class UserFacade extends AbstractFacade<User> {
             salt = new Salt(user.getSalt());
         } else {
             salt = new Salt();
+            salt.setConstFakeSalt(email);
         }
         return salt;
     }

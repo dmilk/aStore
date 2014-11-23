@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package resource;
 
 import entity.Ticket;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import session.CategoryFacade;
 import session.TicketFacade;
 
@@ -26,40 +26,28 @@ import session.TicketFacade;
  * @author OLEG
  */
 @Path("ticket")
-public class TicketREST {
+public class TicketResource {
     
-//    @PersistenceContext(unitName = "aStorePU")
-//    private EntityManager em;
-
     @EJB
     TicketFacade ticketFacade;
 
     @EJB
     CategoryFacade categoryFacade;
 
-    /**
-     * Creates a new instance of TicketREST
-     */
-    public TicketREST() {
+    public TicketResource() {
     }
 
-    /**
-     * Retrieves representation of an instance of rest.TicketREST
-     *
-     * @return an instance of java.lang.String
-     */
     @GET
-    @Produces({"application/xml", "application/json"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Ticket> finaAll() {
-        //TODO return proper representation object
         return ticketFacade.findAll();
     }
 
     @GET
     @Path("{id}")
-    @Produces({"application/xml", "application/json"})
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<Ticket> findByCategory(@PathParam("id") Integer categoryId) {
-        List<Ticket> tickets = new ArrayList<Ticket>(categoryFacade.find(categoryId).getTicketCollection());
+        List<Ticket> tickets = new ArrayList<>(categoryFacade.find(categoryId).getTicketCollection());
         Collections.sort(tickets, TicketNameComparator);
         return tickets;
     }

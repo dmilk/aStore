@@ -115,6 +115,7 @@ public class User implements Serializable {
         this.dateCreated = dateCreated;
     }
 
+    @XmlTransient
     public Integer getId() {
         return id;
     }
@@ -131,6 +132,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    @XmlTransient
     public String getPassword() {
         return password;
     }
@@ -139,6 +141,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    @XmlTransient
     public String getSalt() {
         return salt;
     }
@@ -171,6 +174,7 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
+    @XmlTransient
     public boolean getActive() {
         return active;
     }
@@ -179,6 +183,7 @@ public class User implements Serializable {
         this.active = active;
     }
 
+    @XmlTransient
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -187,6 +192,7 @@ public class User implements Serializable {
         this.dateCreated = dateCreated;
     }
 
+    @XmlTransient
     public String getToken() {
         return token;
     }

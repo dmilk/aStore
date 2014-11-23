@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package resource;
 
 import auth.AuthAccessElement;
 import entity.CustomerOrder;
@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
@@ -26,7 +25,7 @@ import session.UserFacade;
  * @author Notreal
  */
 @Path("order")
-public class CustomerOrderREST {
+public class CustomerOrderResource {
 
     @EJB
     CustomerOrderFacade customerOrderFacade;
@@ -35,8 +34,7 @@ public class CustomerOrderREST {
     UserFacade userFacade;
 
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @PermitAll
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<CustomerOrder> findAll(@HeaderParam(AuthAccessElement.PARAM_AUTH_TOKEN) String authToken) {
         User user = userFacade.findByToken(authToken);
         if (user != null) {

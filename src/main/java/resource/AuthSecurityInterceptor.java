@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package resource;
 
 import auth.AuthAccessElement;
 import auth.AuthService;
@@ -12,9 +12,9 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
@@ -33,27 +33,26 @@ public class AuthSecurityInterceptor implements ContainerRequestFilter {
     AuthService authService;
 
     @Context
-    private HttpServletRequest request;
-
-    @Context
     private ResourceInfo resourceInfo;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        // Get AuthId and AuthToken from HTTP-Header.
-//        String authId = requestContext.getHeaderString(AuthAccessElement.PARAM_AUTH_ID);
-//        String authToken = requestContext.getHeaderString(AuthAccessElement.PARAM_AUTH_TOKEN);
         String authToken = requestContext.getHeaderString(AuthAccessElement.PARAM_AUTH_TOKEN);
 
         // Get method invoked.
         Method methodInvoked = resourceInfo.getResourceMethod();
 
+        if (methodInvoked.isAnnotationPresent(DenyAll.class)) {
+            requestContext.abortWith(Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .entity("User cannot access the resource.")
+                    .build());
+
+        }
+
         if (methodInvoked.isAnnotationPresent(RolesAllowed.class)) {
             RolesAllowed rolesAllowedAnnotation = methodInvoked.getAnnotation(RolesAllowed.class);
             Set<String> rolesAllowed = new HashSet<>(Arrays.asList(rolesAllowedAnnotation.value()));
-            //System.out.println(rolesAllowed);
-
-//            if (!rolesAllowed.contains("user")) {
             boolean authorized = authService.isAuthorized(authToken, rolesAllowed);
             if (!authorized) {
                 requestContext.abortWith(Response
@@ -62,5 +61,6 @@ public class AuthSecurityInterceptor implements ContainerRequestFilter {
                         .build());
             }
         }
+
     }
 }

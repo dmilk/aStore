@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package resource;
 
 import filter.NewCrossOriginResourceSharingFilter;
 import javax.ws.rs.ApplicationPath;
@@ -16,8 +16,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 @ApplicationPath("rest")
 public class MyApplication extends ResourceConfig {
     public MyApplication() {
-        packages("rest");
+        packages("resource");
         register(NewCrossOriginResourceSharingFilter.class);
-//        register(SecurityEntityFilteringFeature.class);
     }
 }

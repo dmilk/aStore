@@ -9,27 +9,20 @@ import auth.AuthAccessElement;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.container.PreMatching;
-import javax.ws.rs.ext.Provider;
 
 /**
  *
  * @author Notreal
  */
-
 public class NewCrossOriginResourceSharingFilter implements ContainerResponseFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext response) {
-//        System.out.println(requestContext.getHeaders());
-//        System.out.println(requestContext.getRequest());
-        
         response.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
         response.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
         String headers = "Content-Type";
         headers = headers + ", " + AuthAccessElement.PARAM_AUTH_TOKEN;
         response.getHeaders().putSingle("Access-Control-Allow-Headers", headers);
-//        System.out.println(response.getHeaders());
     }
 
 }

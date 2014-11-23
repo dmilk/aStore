@@ -3,16 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package resource;
 
 import auth.AuthAccessElement;
 import auth.AuthInfo;
 import auth.AuthService;
 import auth.Salt;
 import entity.User;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -32,9 +29,7 @@ import session.UuidBean;
  * @author Notreal
  */
 @Path("user")
-public class UserREST {
-    private static final Logger LOG = Logger.getLogger(UserREST.class.getName());
-
+public class UserResource {
     @EJB
     AuthService authService;
 
@@ -44,34 +39,31 @@ public class UserREST {
     @EJB
     UuidBean uuidBean;
 
-    public UserREST() {
+    public UserResource() {
     }
 
     @POST
     @Path("signup")
-    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signup(UserJson userJson) {
-        LOG.log(Level.INFO, null, userJson);
-        Salt salt = userFacade.createUser(userJson.getFirstName(), userJson.getLastName(),
-                userJson.getEmail(), userJson.getPhone());
+    public Response signup(User user) {
+        Salt salt = userFacade.createUser(user.getFirstName(), user.getLastName(),
+                user.getEmail(), user.getPhone());
 
         if (salt != null) {
             return Response.ok(salt).build();
         } else {
-            LOG.log(Level.WARNING, "can't get the salt");
             return Response.status(Response.Status.FORBIDDEN).entity("email already exist").build();
         }
     }
 
     @POST
     @Path("password")
-    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response setPassword(PasswordJson passwordJson) {
-        if (userFacade.setUserPassword(passwordJson.getLogin(), passwordJson.getPassword())) {
+//    public Response setPassword(PasswordJson passwordJson) {
+    public Response setPassword(AuthInfo authInfo) {
+        if (userFacade.setUserPassword(authInfo.getLogin(), authInfo.getPassword())) {
             return Response.ok().build();
         } else {
             return Response.status(Response.Status.FORBIDDEN).entity("add password fail").build();
@@ -80,7 +72,6 @@ public class UserREST {
 
     @GET
     @Path("salt")
-    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSalt(@QueryParam("email") String email) {
@@ -90,7 +81,6 @@ public class UserREST {
 
     @POST
     @Path("login")
-    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@Context HttpServletRequest request, AuthInfo authInfo) {
@@ -106,26 +96,26 @@ public class UserREST {
     @GET
     @Path("info")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @PermitAll
-    public UserJson getUserInfo(@Context HttpServletRequest request) {
+//    public UserJson getUserInfo(@Context HttpServletRequest request) {
+    public User getUserInfo(@Context HttpServletRequest request) {
         String authToken = request.getHeader(AuthAccessElement.PARAM_AUTH_TOKEN);
         User user = userFacade.findByToken(authToken);
-        if (user != null) {
-            return new UserJson(
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getEmail(),
-                    user.getPhone());
-        }
-        return new UserJson();
+        return user;
+//        if (user != null) {
+//            return new UserJson(
+//                    user.getFirstName(),
+//                    user.getLastName(),
+//                    user.getEmail(),
+//                    user.getPhone());
+//        }
+//        return new UserJson();
     }
 
-    @GET
-    @Path("uuid")
-    @PermitAll
-    public String getUuid() {
-        return uuidBean.getUuid();
-    }
+//    @GET
+//    @Path("uuid")
+//    public String getUuid() {
+//        return uuidBean.getUuid();
+//    }
 
     public static class UserJson {
 
