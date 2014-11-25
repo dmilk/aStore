@@ -16,14 +16,31 @@
         <apache.poi.version>3.10.1</apache.poi.version>
         <jersey.version>2.13</jersey.version>
         <glassfish.embedded-static-shell.jar>c:/dev/glassfish-4.1/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
-        <skipTests>true</skipTests>
+        <build.profile.id>dev</build.profile.id>
+        <skip.integration.tests>true</skip.integration.tests>
+        <skip.unit.tests>false</skip.unit.tests>
+
         <testContainerFactory>org.glassfish.jersey.test.external.ExternalTestContainerFactory</testContainerFactory>
         <testContainerPort>8080</testContainerPort>
-
     </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+        </profile>
+        <profile>
+            <id>IT</id>
+            <properties>
+                <!-- Used to locate the profile specific configuration file. -->
+                <build.profile.id>integration-test</build.profile.id>
+                <!-- Only integration tests are run. -->
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles> 
     
     <dependencies>
-
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
@@ -116,6 +133,17 @@
         </dependency>
     </dependencies>
     <build>
+        
+        <filters>
+            <filter>profiles/${build.profile.id}/config.properties</filter>
+        </filters>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>   
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -167,17 +195,21 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18</version>
                 <configuration>
-                    <skipTests>${skipTests}</skipTests>
+                    <skipTests>${skip.unit.tests}</skipTests>
                     <systemPropertyVariables>
                         <jersey.config.test.container.factory>${testContainerFactory}</jersey.config.test.container.factory>
                         <jersey.config.test.container.port>${testContainerPort}</jersey.config.test.container.port>
                     </systemPropertyVariables>
+                    <excludes>
+                        <exclude>**/*IT.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.18</version>
                 <configuration>
+                    <skipTests>${skip.integration.tests}</skipTests>
                     <systemPropertyVariables>
                         <jersey.config.test.container.factory>${testContainerFactory}</jersey.config.test.container.factory>
                         <jersey.config.test.container.port>${testContainerPort}</jersey.config.test.container.port>
@@ -187,11 +219,12 @@
                     </includes>
                     <executions>
                         <execution>
-                            <id>failsafe-integration-tests</id>
+                            <id>failsafe-integration-test</id>
                             <phase>integration-test</phase>
                             <phase>verify</phase>
                             <goals>
                                 <goal>integration-test</goal>
+                                <goal>verify</goal>
                             </goals>
                         </execution>
                     </executions>

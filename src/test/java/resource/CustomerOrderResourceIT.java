@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 /**
  *
  * @author Notreal
+ * mvn failsafe:integration-test -PIT
  */
 public class CustomerOrderResourceIT extends MyJerseyIT {
     

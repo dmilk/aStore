@@ -36,13 +36,14 @@ public class CustomerOrderResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<CustomerOrder> findAll(@HeaderParam(AuthAccessElement.PARAM_AUTH_TOKEN) String authToken) {
-        User user = userFacade.findByToken(authToken);
-        if (user != null) {
-            return user.getCustomerOrderCollection();
-        } else
-        {
-            return Collections.EMPTY_LIST;
-        }
+        return userFacade.getCustomerOrderCollection(authToken);
+//        User user = userFacade.findByToken(authToken);
+//        if (user != null) {
+//            return user.getCustomerOrderCollection();
+//        } else
+//        {
+//            return Collections.EMPTY_LIST;
+//        }
     }
     
 }

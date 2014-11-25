@@ -6,9 +6,11 @@
 package session;
 
 import auth.Salt;
+import entity.CustomerOrder;
 import entity.Role;
 import entity.User;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -113,6 +115,18 @@ public class UserFacade extends AbstractFacade<User> {
             salt.setConstFakeSalt(email);
         }
         return salt;
+    }
+    
+    public Collection<CustomerOrder> getCustomerOrderCollection(String authToken) {
+        User user = findByToken(authToken);
+        if (user != null) {
+            em.refresh(user);
+            return user.getCustomerOrderCollection();
+        } else
+        {
+            return Collections.EMPTY_LIST;
+        }
+    
     }
 
 }

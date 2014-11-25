@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.Remove;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
