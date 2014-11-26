@@ -5,7 +5,6 @@
  */
 package resource;
 
-import resource.MyApplication;
 import java.net.URI;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.UriBuilder;
