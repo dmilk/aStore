@@ -1,6 +1,0 @@
-INSERT INTO APP.ROUTE (ID, "NAME") 
-	VALUES (1, 'first');
-INSERT INTO APP.ROUTE (ID, "NAME") 
-	VALUES (2, 'second');
-INSERT INTO APP.ROUTE (ID, "NAME") 
-	VALUES (3, 'third');

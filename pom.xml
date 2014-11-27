@@ -100,7 +100,7 @@
         <dependency>
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
             <artifactId>jersey-test-framework-provider-external</artifactId>
-            <version>2.13</version>
+            <version>${jersey.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -225,7 +225,14 @@
                             <fileset>
                                 <basedir>${basedir}</basedir>
                                 <includes>
-                                    <include>src/test/route_data.sql</include>
+                                    <include>src/test/astore_category.sql</include>
+                                    <include>src/test/astore_customer_order.sql</include>
+                                    <include>src/test/astore_ordered_ticket.sql</include>
+                                    <include>src/test/astore_role.sql</include>
+                                    <include>src/test/astore_route.sql</include>
+                                    <include>src/test/astore_ticket.sql</include>
+                                    <include>src/test/astore_user.sql</include>
+                                    <include>src/test/astore_user_has_role.sql</include>
                                 </includes>
                             </fileset>
                         </configuration>
