@@ -49,7 +49,7 @@ public class Route implements Serializable {
     @Column(name = "NAME")
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "route")
-    private Collection<CustomerOrder> customerOrderCollection;
+    private Collection<Order> customerOrderCollection;
 
     public Route() {
     }
@@ -80,11 +80,11 @@ public class Route implements Serializable {
     }
 
     @XmlTransient
-    public Collection<CustomerOrder> getCustomerOrderCollection() {
+    public Collection<Order> getCustomerOrderCollection() {
         return customerOrderCollection;
     }
 
-    public void setCustomerOrderCollection(Collection<CustomerOrder> customerOrderCollection) {
+    public void setCustomerOrderCollection(Collection<Order> customerOrderCollection) {
         this.customerOrderCollection = customerOrderCollection;
     }
 

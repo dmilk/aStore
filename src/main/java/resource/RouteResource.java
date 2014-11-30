@@ -7,7 +7,6 @@ package resource;
 
 import entity.Route;
 import java.util.List;
-import javax.annotation.security.DenyAll;
 import javax.ejb.EJB;
 import javax.validation.constraints.DecimalMin;
 import javax.ws.rs.DELETE;
@@ -42,9 +41,16 @@ public class RouteResource {
     @Path("new")
     @Produces(MediaType.APPLICATION_JSON)
     public Route createRoute() {
+//        Route route = new Route(3, "newRoute");
+//        routeFacade.create(route);
+        
         Route route = new Route();
         route.setName("newRoute");
         routeFacade.create(route);
+
+        System.out.println("route = " + route);
+        
+        
         return route;
     }
     

@@ -1,0 +1,2 @@
+INSERT INTO "CATEGORY" ("ID", "NAME") VALUES (1,'man');
+INSERT INTO "CATEGORY" ("ID", "NAME") VALUES (2,'vehicle');

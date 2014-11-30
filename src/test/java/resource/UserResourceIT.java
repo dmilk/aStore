@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  *
@@ -32,8 +31,8 @@ public class UserResourceIT extends MyJerseyIT {
                 path("user");
         
         final User user = new User();
-        user.setFirstName("testName");
-        user.setLastName("testName2");
+        user.setFirstName("testFirstName");
+        user.setLastName("testLastName");
         user.setEmail("test@test");
         user.setPhone("123-123-123");
         
@@ -110,7 +109,7 @@ public class UserResourceIT extends MyJerseyIT {
         final WebTarget target = target().
                 path("user");
 
-        final AuthInfo authInfo = new AuthInfo("am@am", "34b1fdfe553ebdbe30c08a3b7760f6fda066cfaab8948fbec3dc045d116ebb83");
+        final AuthInfo authInfo = new AuthInfo("notreal@mail.ru", "f34ae573a52c6bed3c17e94b0d180268fd88123d282c780122a8e9695011c7c9");
 
         Response response = target.
                 path("login").
@@ -118,7 +117,7 @@ public class UserResourceIT extends MyJerseyIT {
                 post(Entity.entity(authInfo, MediaType.APPLICATION_JSON_TYPE));
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
-        final AuthInfo invalidAuthInfo = new AuthInfo("am@am", "");
+        final AuthInfo invalidAuthInfo = new AuthInfo("notreal@mail.ru", "");
         response = target.
                 path("login").
                 request(MediaType.APPLICATION_JSON_TYPE).
@@ -141,7 +140,7 @@ public class UserResourceIT extends MyJerseyIT {
         // {"email":"oleg@setco.ru","firstName":"Олег","lastName":"Сорокин","phone":"7755529"}
         final WebTarget target = target().
                 path("user");
-        String authToken = "22642480-7d61-4fd2-9b10-7f03f69fb656";
+        String authToken = "fe3301b3-3eb4-4260-8824-87e5de00928d";
 
         Response response = target.path("info").request(MediaType.APPLICATION_JSON_TYPE).header(AuthAccessElement.PARAM_AUTH_TOKEN, authToken).get();
         assertEquals(200, response.getStatus());
@@ -166,19 +165,4 @@ public class UserResourceIT extends MyJerseyIT {
         assertNull(user.getSalt());
         assertNull(user.getToken());
     }
-
-    /**
-     * Test of getUuid method, of class UserResource.
-     */
-//    @Test
-//    @Ignore
-//    public void testGetUuid() {
-//        System.out.println("getUuid");
-//        UserResource instance = new UserResource();
-//        String expResult = "";
-//        String result = instance.getUuid();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
 }

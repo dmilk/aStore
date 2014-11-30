@@ -6,7 +6,7 @@
 package resource;
 
 import auth.AuthAccessElement;
-import entity.CustomerOrder;
+import entity.Order;
 import java.util.List;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  * @author Notreal
  * mvn failsafe:integration-test -PIT
  */
-public class CustomerOrderResourceIT extends MyJerseyIT {
+public class OrderResourceIT extends MyJerseyIT {
     
     /**
      * Test of findAll method, of class CustomerOrderResource.
@@ -29,12 +29,12 @@ public class CustomerOrderResourceIT extends MyJerseyIT {
     public void testFindAll() {
         final WebTarget target = target().
                 path("order");
-        String authToken = "22642480-7d61-4fd2-9b10-7f03f69fb656";
+        String authToken = "fe3301b3-3eb4-4260-8824-87e5de00928d";
         
         Response response = target.request(MediaType.APPLICATION_JSON_TYPE).header(AuthAccessElement.PARAM_AUTH_TOKEN, authToken).get();
         assertEquals(200, response.getStatus());
         
-        List<CustomerOrder> customerOrderList = response.readEntity(new GenericType<List<CustomerOrder>>() {
+        List<Order> customerOrderList = response.readEntity(new GenericType<List<Order>>() {
         });
         System.out.println(customerOrderList);
         assertFalse(customerOrderList.isEmpty());

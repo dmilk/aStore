@@ -1,0 +1,2 @@
+INSERT INTO "ROUTE" ("NAME") VALUES ('kavkaz_krym');
+INSERT INTO "ROUTE" ("NAME") VALUES ('krym_kavkaz');

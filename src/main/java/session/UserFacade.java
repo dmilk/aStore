@@ -6,7 +6,7 @@
 package session;
 
 import auth.Salt;
-import entity.CustomerOrder;
+import entity.Order;
 import entity.Role;
 import entity.User;
 import java.util.Collection;
@@ -76,6 +76,7 @@ public class UserFacade extends AbstractFacade<User> {
                 user.setRoleCollection(roles);
 
                 em.persist(user);
+                em.flush();
                 return salt;
             } else {
                 return null;
@@ -117,7 +118,7 @@ public class UserFacade extends AbstractFacade<User> {
         return salt;
     }
     
-    public Collection<CustomerOrder> getCustomerOrderCollection(String authToken) {
+    public Collection<Order> getCustomerOrderCollection(String authToken) {
         User user = findByToken(authToken);
         if (user != null) {
             em.refresh(user);

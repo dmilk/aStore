@@ -7,7 +7,7 @@ package session;
 
 import cart.ShoppingCart;
 import cart.ShoppingCartItem;
-import entity.CustomerOrder;
+import entity.Order;
 import entity.OrderedTicket;
 import entity.Route;
 import entity.Ticket;
@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Random;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.ejb.Remove;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -51,7 +50,7 @@ public class OrderManager {
     UserFacade userFacade;
     
     @EJB
-    CustomerOrderFacade customerOrderFacade;
+    OrderFacade orderFacade;
     
     @EJB
     OrderedTicketFacade orderedTicketFacade;
@@ -66,7 +65,7 @@ public class OrderManager {
         try {
             Route route = routeFacade.find(routeId);
             User user = userFacade.find(userId);
-            CustomerOrder customerOrder = addCustomerOrder(firstName, lastName, email, phone, user, route, cart);
+            Order customerOrder = addOrder(firstName, lastName, email, phone, user, route, cart);
             addOrderedItems(customerOrder, cart);
             return customerOrder.getId();
         } catch (Exception e) {
@@ -76,10 +75,10 @@ public class OrderManager {
         }
     }
 
-    private CustomerOrder addCustomerOrder(String firstName, String lastName, String email, String phone, User user, 
+    private Order addOrder(String firstName, String lastName, String email, String phone, User user, 
             Route route, ShoppingCart cart) 
     {
-        CustomerOrder customerOrder = new CustomerOrder();
+        Order customerOrder = new Order();
         customerOrder.setFirstName(firstName);
         customerOrder.setLastName(lastName);
         customerOrder.setEmail(email);
@@ -97,7 +96,7 @@ public class OrderManager {
         return customerOrder;
     }
     
-    private void addOrderedItems(CustomerOrder customerOrder, ShoppingCart cart) {
+    private void addOrderedItems(Order customerOrder, ShoppingCart cart) {
         em.flush();
         
         List<ShoppingCartItem> items = cart.getItems();
@@ -105,7 +104,7 @@ public class OrderManager {
             int ticketId = item.getTicket().getId();
             
             OrderedTicket orderedTicket = new OrderedTicket();
-            orderedTicket.setCustomerOrder(customerOrder);
+            orderedTicket.setOrder(customerOrder);
             orderedTicket.setTicket(item.getTicket());
             orderedTicket.setTicketData(item.getTicketData());
             
@@ -116,7 +115,7 @@ public class OrderManager {
     public Map getOrderDetails(int orderId) {
         Map orderMap = new HashMap();
         
-        CustomerOrder customerOrder = customerOrderFacade.find(orderId);
+        Order customerOrder = orderFacade.find(orderId);
         
         List<OrderedTicket> orderedTickets = customerOrder.getOrderedTicketCollection();
         

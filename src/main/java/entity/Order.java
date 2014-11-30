@@ -34,19 +34,19 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Notreal
  */
 @Entity
-        @Table(name = "customer_order")
-        @XmlRootElement
-        @NamedQueries({
-            @NamedQuery(name = "CustomerOrder.findAll", query = "SELECT c FROM CustomerOrder c"),
-            @NamedQuery(name = "CustomerOrder.findById", query = "SELECT c FROM CustomerOrder c WHERE c.id = :id"),
-            @NamedQuery(name = "CustomerOrder.findByAmount", query = "SELECT c FROM CustomerOrder c WHERE c.amount = :amount"),
-            @NamedQuery(name = "CustomerOrder.findByDateCreated", query = "SELECT c FROM CustomerOrder c WHERE c.dateCreated = :dateCreated"),
-            @NamedQuery(name = "CustomerOrder.findByConfirmationNumber", query = "SELECT c FROM CustomerOrder c WHERE c.confirmationNumber = :confirmationNumber"),
-            @NamedQuery(name = "CustomerOrder.findByFirstName", query = "SELECT c FROM CustomerOrder c WHERE c.firstName = :firstName"),
-            @NamedQuery(name = "CustomerOrder.findByLastName", query = "SELECT c FROM CustomerOrder c WHERE c.lastName = :lastName"),
-            @NamedQuery(name = "CustomerOrder.findByEmail", query = "SELECT c FROM CustomerOrder c WHERE c.email = :email"),
-            @NamedQuery(name = "CustomerOrder.findByPhone", query = "SELECT c FROM CustomerOrder c WHERE c.phone = :phone")})
-public class CustomerOrder implements Serializable {
+@Table(name = "\"ORDER\"")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Order.findAll", query = "SELECT c FROM Order c"),
+    @NamedQuery(name = "Order.findById", query = "SELECT c FROM Order c WHERE c.id = :id"),
+    @NamedQuery(name = "Order.findByAmount", query = "SELECT c FROM Order c WHERE c.amount = :amount"),
+    @NamedQuery(name = "Order.findByDateCreated", query = "SELECT c FROM Order c WHERE c.dateCreated = :dateCreated"),
+    @NamedQuery(name = "Order.findByConfirmationNumber", query = "SELECT c FROM Order c WHERE c.confirmationNumber = :confirmationNumber"),
+    @NamedQuery(name = "Order.findByFirstName", query = "SELECT c FROM Order c WHERE c.firstName = :firstName"),
+    @NamedQuery(name = "Order.findByLastName", query = "SELECT c FROM Order c WHERE c.lastName = :lastName"),
+    @NamedQuery(name = "Order.findByEmail", query = "SELECT c FROM Order c WHERE c.email = :email"),
+    @NamedQuery(name = "Order.findByPhone", query = "SELECT c FROM Order c WHERE c.phone = :phone")})
+public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -96,17 +96,17 @@ public class CustomerOrder implements Serializable {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private User user;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerOrder")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderedTicket> orderedTicketCollection;
 
-    public CustomerOrder() {
+    public Order() {
     }
 
-    public CustomerOrder(Integer id) {
+    public Order(Integer id) {
         this.id = id;
     }
 
-    public CustomerOrder(Integer id, BigDecimal amount, Date dateCreated, int confirmationNumber, String firstName, String lastName, String email, String phone) {
+    public Order(Integer id, BigDecimal amount, Date dateCreated, int confirmationNumber, String firstName, String lastName, String email, String phone) {
         this.id = id;
         this.amount = amount;
         this.dateCreated = dateCreated;
@@ -218,10 +218,10 @@ public class CustomerOrder implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CustomerOrder)) {
+        if (!(object instanceof Order)) {
             return false;
         }
-        CustomerOrder other = (CustomerOrder) object;
+        Order other = (Order) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -230,7 +230,7 @@ public class CustomerOrder implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.CustomerOrder[ id=" + id + " ]";
+        return "entity.Order[ id=" + id + " ]";
     }
 
 }

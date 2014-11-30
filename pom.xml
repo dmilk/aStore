@@ -13,6 +13,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <apache.poi.version>3.10.1</apache.poi.version>
         <jersey.version>2.13</jersey.version>
         <glassfish.embedded-static-shell.jar>${env.S1AS_HOME}/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
@@ -31,11 +32,9 @@
         <profile>
             <id>IT</id>
             <properties>
-                <!-- Used to locate the profile specific configuration file. -->
                 <build.profile.id>integration-test</build.profile.id>
-                <!-- Only integration tests are run. -->
                 <skip.integration.tests>false</skip.integration.tests>
-                <skip.unit.tests>true</skip.unit.tests>
+                <skip.unit.tests>false</skip.unit.tests>
             </properties>
         </profile>
     </profiles> 
@@ -192,11 +191,35 @@
             </plugin>
             
             <plugin>
+                <groupId>org.glassfish.maven.plugin</groupId>
+                <artifactId>maven-glassfish-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <glassfishDirectory>${local.glassfish.home}</glassfishDirectory>
+                    <user>admin</user>
+                    <passwordFile>${local.glassfish.passfile}</passwordFile>
+                    <domain>
+                        <name>domain1</name>
+                        <httpPort>8080</httpPort>
+                        <adminPort>4848</adminPort>
+                    </domain>
+                    <components>
+                        <component>
+                            <name>${project.artifactId}</name>
+                            <artifact>target/${project.build.finalName}.war</artifact>
+                        </component>
+                    </components>
+                    <debug>true</debug>
+                    <terse>false</terse>
+                    <echo>true</echo>
+                </configuration>
+            </plugin>
+            
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sql-maven-plugin</artifactId>
                 <version>1.5</version>
                 <dependencies>
-                    <!-- specify the dependent jdbc driver here -->
                     <dependency>
                         <groupId>org.apache.derby</groupId>
                         <artifactId>derbyclient</artifactId>
@@ -210,12 +233,12 @@
                     <username>APP</username>
                     <password>APP</password>
                     <settingsKey>sensibleKey</settingsKey>
-                    <skip>${maven.test.skip}</skip>
+                    <skip>${skip.integration.tests}</skip>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>create-data</id>
-                        <phase>process-test-resources</phase>
+                        <id>create-integration-test-data</id>
+                        <phase>pre-integration-test</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
@@ -225,14 +248,15 @@
                             <fileset>
                                 <basedir>${basedir}</basedir>
                                 <includes>
-                                    <include>src/test/astore_category.sql</include>
-                                    <include>src/test/astore_customer_order.sql</include>
-                                    <include>src/test/astore_ordered_ticket.sql</include>
-                                    <include>src/test/astore_role.sql</include>
-                                    <include>src/test/astore_route.sql</include>
-                                    <include>src/test/astore_ticket.sql</include>
-                                    <include>src/test/astore_user.sql</include>
-                                    <include>src/test/astore_user_has_role.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_00_delete_data.sql</include>                                    
+                                    <include>profiles/${build.profile.id}/astore_01_user.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_02_role.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_03_user_has_role.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_04_route.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_05_category.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_06_ticket.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_07_order.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_08_ordered_ticket.sql</include>
                                 </includes>
                             </fileset>
                         </configuration>
@@ -254,7 +278,9 @@
                     </excludes>
                 </configuration>
             </plugin>
+            
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.18</version>
                 <configuration>
@@ -266,20 +292,19 @@
                     <includes>
                         <include>**/*IT.java</include>
                     </includes>
-                    <executions>
-                        <execution>
-                            <id>failsafe-integration-test</id>
-                            <phase>integration-test</phase>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>integration-test</goal>
-                                <goal>verify</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>failsafe-integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
+        <finalName>aStore</finalName>
     </build>
     
 </project>

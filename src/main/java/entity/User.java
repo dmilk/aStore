@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Notreal
  */
 @Entity
-@Table(name = "user")
+@Table(name = "\"USER\"") // \" for auto-create table in DerbyDB
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
@@ -87,7 +87,7 @@ public class User implements Serializable {
     @Column(name = "ACTIVE")
     private boolean active;
     @Basic(optional = false)
-    @Column(name = "DATE_CREATED")
+    @Column(name = "DATE_CREATED", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     @Size(max = 64)
@@ -96,7 +96,7 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<CustomerOrder> customerOrderCollection;
+    private Collection<Order> customerOrderCollection;
 
     public User() {
     }
@@ -236,11 +236,11 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public Collection<CustomerOrder> getCustomerOrderCollection() {
+    public Collection<Order> getCustomerOrderCollection() {
         return customerOrderCollection;
     }
 
-    public void setCustomerOrderCollection(Collection<CustomerOrder> customerOrderCollection) {
+    public void setCustomerOrderCollection(Collection<Order> customerOrderCollection) {
         this.customerOrderCollection = customerOrderCollection;
     }
 

@@ -5,7 +5,7 @@
  */
 package session;
 
-import entity.CustomerOrder;
+import entity.Order;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ import org.apache.poi.ss.usermodel.Cell;
 public class ReportManager {
 
     @EJB
-    CustomerOrderFacade customerOrderFacade;
+    OrderFacade customerOrderFacade;
 
     public void generateExcel(OutputStream outputStream) {
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -41,9 +41,9 @@ public class ReportManager {
         Map<Integer, Object[]> data = new TreeMap<Integer, Object[]>();
         data.put(i++, new Object[]{"N", "NAME", "LAST NAME", "E-MAIL", "AMOUNT", "DATE"});
 
-        List<CustomerOrder> customerOrders = customerOrderFacade.findAll();
+        List<Order> customerOrders = customerOrderFacade.findAll();
 
-        for (CustomerOrder customerOrder : customerOrders) {
+        for (Order customerOrder : customerOrders) {
             data.put(i++, new Object[]{
                 i - 1,
                 customerOrder.getFirstName(),

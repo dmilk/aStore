@@ -7,7 +7,7 @@ package resource;
 
 import auth.AuthAccessElement;
 import cart.ShoppingCart;
-import entity.CustomerOrder;
+import entity.Order;
 import entity.Ticket;
 import entity.User;
 import java.util.List;
@@ -58,7 +58,7 @@ public class PurchaseREST {
                 userId, orderJson.routeId, convertJsonCart(orderJson.cart));
 
         Map orderMap = orderManager.getOrderDetails(orderId);
-         return new OrderConfirmationJson(((CustomerOrder) orderMap.get("orderRecord")).getConfirmationNumber());
+         return new OrderConfirmationJson(((Order) orderMap.get("orderRecord")).getConfirmationNumber());
     }
 
     private ShoppingCart convertJsonCart(List<TicketJson> tickets) {

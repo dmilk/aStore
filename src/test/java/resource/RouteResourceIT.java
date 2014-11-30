@@ -5,20 +5,14 @@
  */
 package resource;
 
-import com.sun.jersey.spi.inject.SingletonTypeInjectableProvider;
 import entity.Route;
 import java.util.List;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-import session.RouteFacade;
 
 /**
  *

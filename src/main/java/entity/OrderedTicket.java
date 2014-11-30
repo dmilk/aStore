@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "OrderedTicket.findAll", query = "SELECT o FROM OrderedTicket o"),
     @NamedQuery(name = "OrderedTicket.findById", query = "SELECT o FROM OrderedTicket o WHERE o.id = :id"),
     @NamedQuery(name = "OrderedTicket.findByTicketData", query = "SELECT o FROM OrderedTicket o WHERE o.ticketData = :ticketData")
-//            @NamedQuery(name = "OrderedTicket.findByCustomerOrderId", query = "SELECT o FROM OrderedTicket o WHERE o.customerOrder = :customerOrder")
         })
 public class OrderedTicket implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -47,9 +46,9 @@ public class OrderedTicket implements Serializable {
     @Size(min = 1, max = 1024)
     @Column(name = "TICKET_DATA")
     private String ticketData;
-    @JoinColumn(name = "CUSTOMER_ORDER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private CustomerOrder customerOrder;
+    private Order order;
     @JoinColumn(name = "TICKET_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Ticket ticket;
@@ -84,12 +83,12 @@ public class OrderedTicket implements Serializable {
     }
 
     @XmlTransient
-    public CustomerOrder getCustomerOrder() {
-        return customerOrder;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setCustomerOrder(CustomerOrder customerOrder) {
-        this.customerOrder = customerOrder;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Ticket getTicket() {
