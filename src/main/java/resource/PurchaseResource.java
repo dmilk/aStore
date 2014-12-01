@@ -19,6 +19,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import session.OrderManager;
 import session.TicketFacade;
 import session.UserFacade;
@@ -29,7 +30,7 @@ import session.UserFacade;
  * @author OLEG
  */
 @Path("purchase")
-public class PurchaseREST {
+public class PurchaseResource {
 
     @EJB
     private OrderManager orderManager;
@@ -41,12 +42,10 @@ public class PurchaseREST {
     private UserFacade userFacade;
 
     @POST
-    @Consumes({"application/json"})
-    @Produces({"application/json"})
-    public OrderConfirmationJson placeOrder(@Context HttpServletRequest request, OrderJson orderJson) {
-        System.out.println("OrderJson\n");
-        System.out.println(orderJson);
-
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+//    public OrderConfirmationJson placeOrder(@Context HttpServletRequest request, OrderJson orderJson) {
+    public OrderConfirmationJson placeOrder(@Context HttpServletRequest request, Order order) {        
         int orderId = 0;
         int userId = 0;
         String authToken = request.getHeader(AuthAccessElement.PARAM_AUTH_TOKEN);
@@ -54,11 +53,14 @@ public class PurchaseREST {
         if (user != null)
             userId = user.getId();
         
-        orderId = orderManager.placeOrder(orderJson.firstName, orderJson.lastName, orderJson.email, orderJson.phone,
-                userId, orderJson.routeId, convertJsonCart(orderJson.cart));
-
-        Map orderMap = orderManager.getOrderDetails(orderId);
-         return new OrderConfirmationJson(((Order) orderMap.get("orderRecord")).getConfirmationNumber());
+        System.out.println(order);
+        return new OrderConfirmationJson(1);
+        
+//        orderId = orderManager.placeOrder(orderJson.firstName, orderJson.lastName, orderJson.email, orderJson.phone,
+//                userId, orderJson.routeId, convertJsonCart(orderJson.cart));
+//
+//        Map orderMap = orderManager.getOrderDetails(orderId);
+//         return new OrderConfirmationJson(((Order) orderMap.get("orderRecord")).getConfirmationNumber());
     }
 
     private ShoppingCart convertJsonCart(List<TicketJson> tickets) {
@@ -70,7 +72,7 @@ public class PurchaseREST {
         return shoppingCart;
     }
 
-    public PurchaseREST() {
+    public PurchaseResource() {
     }
 
     public static class OrderJson {

@@ -40,7 +40,7 @@ public class MyJerseyIT extends JerseyTest {
     
     @Override
     protected URI getBaseUri() {
-        final UriBuilder baseUriBuilder = UriBuilder.fromUri(super.getBaseUri()).path("aStore");
+        final UriBuilder baseUriBuilder = UriBuilder.fromUri(super.getBaseUri()).path("aStore_it");
         final boolean externalFactoryInUse = getTestContainerFactory() instanceof ExternalTestContainerFactory;
         System.out.println("externalFactoryInUse = " + externalFactoryInUse);
         return externalFactoryInUse ? baseUriBuilder.path("rest").build() : baseUriBuilder.build();
