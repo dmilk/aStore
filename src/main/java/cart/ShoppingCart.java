@@ -8,11 +8,13 @@ package cart;
 import entity.Ticket;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author OLEG
  */
+@XmlRootElement
 public class ShoppingCart {
     
     List<ShoppingCartItem> items;

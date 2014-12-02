@@ -21,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import session.OrderManager;
+import session.OrderManagerNew;
 import session.TicketFacade;
 import session.UserFacade;
 
@@ -34,6 +35,9 @@ public class PurchaseResource {
 
     @EJB
     private OrderManager orderManager;
+    
+    @EJB
+    private OrderManagerNew orderManagerNew;
 
     @EJB
     private TicketFacade ticketFacade;
@@ -54,7 +58,16 @@ public class PurchaseResource {
             userId = user.getId();
         
         System.out.println(order);
+        
+        orderId = orderManagerNew.placeOrder(order, user);
+        
+//        orderId = orderManagerNew.placeOrder(order.getFirstName(), order.getLastName(), order.getEmail(), 
+//                order.getPhone(), userId, order.getRoute().getId(), order.getOrderedTicketCollection());
+        
         return new OrderConfirmationJson(1);
+
+//        orderId = orderManagerNew.placeOrder(order.getFirstName(), order.getLastName(), order.getEmail(), 
+//                order.getPhone(), userId, order.getRoute().getId(), order.getOrderedTicketCollection());
         
 //        orderId = orderManager.placeOrder(orderJson.firstName, orderJson.lastName, orderJson.email, orderJson.phone,
 //                userId, orderJson.routeId, convertJsonCart(orderJson.cart));

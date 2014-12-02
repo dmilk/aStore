@@ -6,11 +6,13 @@
 package cart;
 
 import entity.Ticket;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author OLEG
  */
+@XmlRootElement
 public class ShoppingCartItem {
     
     Ticket ticket;
