@@ -1,0 +1,23 @@
+{
+    "email": "oleg@setco.ru",
+    "firstName": "\u041e\u043b\u0435\u0433",
+    "lastName": "\u0421\u043e\u0440\u043e\u043a\u0438\u043d",
+    "orderedTicketCollection": [
+        {
+            "ticket": {
+                "category": {
+                    "id": 2,
+                    "name": "vehicle"
+                },
+                "id": 5,
+                "name": "car",
+                "price": 200
+            },
+            "ticketData": "VVV"
+        }
+    ],
+    "phone": "7755529",
+    "route": {
+        "id": 1
+    }
+}
