@@ -121,7 +121,6 @@ public class OrderedTicket implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.OrderedTicket[ id=" + id + " ]";
+        return "OrderedTicket{" + "id=" + id + ", ticketData=" + ticketData + ", order=" + order + ", ticket=" + ticket + '}';
     }
-    
 }

@@ -5,7 +5,11 @@
  */
 package resource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import entity.Order;
+import entity.OrderedTicket;
 import entity.Route;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,7 +18,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
-import org.eclipse.persistence.jaxb.MarshallerProperties;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -35,6 +38,17 @@ public class PurchaseResourceIT extends MyJerseyIT {
 //            output.flush();
 //            output.close();
 //        }
+        ObjectMapper mapper = new ObjectMapper();
+        Route route = new Route(5);
+        route.setName("555");
+        mapper.writeValue(new File("route.json"), route);
+        Route route2 = mapper.readValue(new File("route.json"), Route.class);
+        System.out.println("route = " + route2);
+        
+//        OrderedTicket orderedTicket = mapper.readValue(new File("profiles/integration-test/order_1.json"), OrderedTicket.class);
+        Order order =  mapper.readValue(new File("profiles/integration-test/order_1.json"), Order.class);
+        System.out.println(order);
+
         try (FileInputStream is = new FileInputStream("profiles/integration-test/order_1.json")) {
 
             Map<String, Object> jaxbProperties = new HashMap<>(2);
@@ -45,7 +59,7 @@ public class PurchaseResourceIT extends MyJerseyIT {
             JAXBContext jaxbContext = JAXBContext.newInstance(Route.class);
             //Customer customer = (Customer) jaxbContext.createUnmarshaller().unmarshal(instanceDoc);
 
-            Route route = new Route(5);
+            route = new Route(5);
             route.setName("555");
 
             Marshaller m = jaxbContext.createMarshaller();
@@ -60,8 +74,6 @@ public class PurchaseResourceIT extends MyJerseyIT {
 //            System.out.println(jsonObject);
 //            
 //            OrderedTicket orderedTicket = (OrderedTicket) unmarshaller.unmarshal(is);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
