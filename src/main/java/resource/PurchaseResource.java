@@ -48,23 +48,21 @@ public class PurchaseResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-//    public OrderConfirmationJson placeOrder(@Context HttpServletRequest request, OrderJson orderJson) {
-    public OrderConfirmationJson placeOrder(@Context HttpServletRequest request, Order order) {        
-        int orderId = 0;
-        int userId = 0;
+    public String placeOrder(@Context HttpServletRequest request, Order order) {        
+        int confirmationNumber = 0;
         String authToken = request.getHeader(AuthAccessElement.PARAM_AUTH_TOKEN);
         User user = userFacade.findByToken(authToken);
-        if (user != null)
-            userId = user.getId();
         
         System.out.println(order);
         
-        orderId = orderManagerNew.placeOrder(order, user);
+        confirmationNumber = orderManagerNew.placeOrder(order, user);
         
 //        orderId = orderManagerNew.placeOrder(order.getFirstName(), order.getLastName(), order.getEmail(), 
 //                order.getPhone(), userId, order.getRoute().getId(), order.getOrderedTicketCollection());
         
-        return new OrderConfirmationJson(1);
+//        return new OrderConfirmationJson(1);
+        return Integer.toString(confirmationNumber);
+        
 
 //        orderId = orderManagerNew.placeOrder(order.getFirstName(), order.getLastName(), order.getEmail(), 
 //                order.getPhone(), userId, order.getRoute().getId(), order.getOrderedTicketCollection());

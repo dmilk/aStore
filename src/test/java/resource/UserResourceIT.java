@@ -40,7 +40,7 @@ public class UserResourceIT extends MyJerseyIT {
                 path("signup").
                 request(MediaType.APPLICATION_JSON_TYPE).
                 post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE));
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(200, response.getStatus());
     }
 
     /**
@@ -115,7 +115,7 @@ public class UserResourceIT extends MyJerseyIT {
                 path("login").
                 request(MediaType.APPLICATION_JSON_TYPE).
                 post(Entity.entity(authInfo, MediaType.APPLICATION_JSON_TYPE));
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(200, response.getStatus());
 
         final AuthInfo invalidAuthInfo = new AuthInfo("notreal@mail.ru", "");
         response = target.
@@ -140,9 +140,12 @@ public class UserResourceIT extends MyJerseyIT {
         // {"email":"oleg@setco.ru","firstName":"Олег","lastName":"Сорокин","phone":"7755529"}
         final WebTarget target = target().
                 path("user");
-        String authToken = "fe3301b3-3eb4-4260-8824-87e5de00928d";
+        final String authToken = "fe3301b3-3eb4-4260-8824-87e5de00928d";
 
-        Response response = target.path("info").request(MediaType.APPLICATION_JSON_TYPE).header(AuthAccessElement.PARAM_AUTH_TOKEN, authToken).get();
+        Response response = target.path("info").
+                request(MediaType.APPLICATION_JSON_TYPE).
+                header(AuthAccessElement.PARAM_AUTH_TOKEN, authToken).
+                get();
         assertEquals(200, response.getStatus());
 
         System.out.println(response);

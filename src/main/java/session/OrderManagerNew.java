@@ -5,15 +5,12 @@
  */
 package session;
 
-import cart.ShoppingCart;
-import cart.ShoppingCartItem;
 import entity.Order;
 import entity.OrderedTicket;
 import entity.Route;
 import entity.Ticket;
 import entity.User;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +55,9 @@ public class OrderManagerNew {
 
     @EJB
     TicketFacade ticketFacade;
+    
+    @EJB
+    ConfirmationNumberService confirmationNumberService;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
 //    public int placeOrder(String firstName, String lastName, String email, String phone, int userId, int routeId, 
@@ -71,15 +71,19 @@ public class OrderManagerNew {
             order.setRoute(route);
             order.setAmount(getTolal(orderedTickets));
             
-            Random random = new Random();
-            int confirmationNumber = random.nextInt(Integer.MAX_VALUE);
+//            Random random = new Random();
+//            int confirmationNumber = random.nextInt(Integer.MAX_VALUE);
+//            order.setConfirmationNumber(confirmationNumber);
+
+            int confirmationNumber = confirmationNumberService.get();
             order.setConfirmationNumber(confirmationNumber);
-            order.setOrderedTicketCollection(null);
+
+            order.setOrderedTicketCollection(null); // Collections.EMPTY_LIST
 
             em.persist(order);
             
             addOrderedItems(order, orderedTickets);
-            return order.getId();
+            return order.getConfirmationNumber();
             
 
 //            Route route = routeFacade.find(routeId);
@@ -104,7 +108,7 @@ public class OrderManagerNew {
     }
 
     private Order addOrder(String firstName, String lastName, String email, String phone, User user,
-            Route route, List<OrderedTicket> orderedTickets) {
+            Route route, List<OrderedTicket> orderedTickets) throws InterruptedException {
         Order order = new Order();
         order.setFirstName(firstName);
         order.setLastName(lastName);
@@ -115,9 +119,11 @@ public class OrderManagerNew {
         order.setAmount(BigDecimal.valueOf(1));
 //        order.setAmount(BigDecimal.valueOf(cart.getTotal()));
 
-        Random random = new Random();
-        int confirmationNumber = random.nextInt(Integer.MAX_VALUE);
-        order.setConfirmationNumber(confirmationNumber);
+//        Random random = new Random();
+//        int confirmationNumber = random.nextInt(Integer.MAX_VALUE);
+//        order.setConfirmationNumber(confirmationNumber);
+//        int conf = ConfirmationNumberService.get();
+//        order.setConfirmationNumber(ConfirmationNumberService.get());
 
         em.persist(order);
 

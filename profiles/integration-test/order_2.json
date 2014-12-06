@@ -1,0 +1,83 @@
+{
+    "email": "oleg@setco.ru",
+    "firstName": "Олег",
+    "lastName": "Сорокин",
+    "orderedTicketCollection": [
+        {
+            "ticket": {
+                "category": {
+                    "id": 1,
+                    "name": "man"
+                },
+                "id": 1,
+                "name": "adult",
+                "price": 100
+            },
+            "ticketData": "adult_ticket"
+        },
+        {
+            "ticket": {
+                "category": {
+                    "id": 1,
+                    "name": "man"
+                },
+                "id": 3,
+                "name": "child",
+                "price": 30
+            },
+            "ticketData": "child_ticket"
+        },
+        {
+            "ticket": {
+                "category": {
+                    "id": 1,
+                    "name": "man"
+                },
+                "id": 2,
+                "name": "invalid",
+                "price": 50
+            },
+            "ticketData": "invalid_ticket"
+        },
+        {
+            "ticket": {
+                "category": {
+                    "id": 2,
+                    "name": "vehicle"
+                },
+                "id": 5,
+                "name": "car",
+                "price": 200
+            },
+            "ticketData": "car_ticket"
+        },
+        {
+            "ticket": {
+                "category": {
+                    "id": 2,
+                    "name": "vehicle"
+                },
+                "id": 4,
+                "name": "mini_car",
+                "price": 150
+            },
+            "ticketData": "mini_car_ticket"
+        },
+        {
+            "ticket": {
+                "category": {
+                    "id": 2,
+                    "name": "vehicle"
+                },
+                "id": 6,
+                "name": "truck",
+                "price": 500
+            },
+            "ticketData": "truck_ticket"
+        }
+    ],
+    "phone": "7755529",
+    "route": {
+        "id": 2
+    }
+}

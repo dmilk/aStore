@@ -61,7 +61,7 @@ public class Order implements Serializable {
     private BigDecimal amount;
     @Basic(optional = false)
     //@NotNull
-    @Column(name = "DATE_CREATED")
+    @Column(name = "DATE_CREATED", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     @Basic(optional = false)
