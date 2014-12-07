@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package resource;
 
-import auth.Cat;
 import entity.Route;
 import java.util.Enumeration;
 import javax.annotation.security.PermitAll;
@@ -92,13 +86,5 @@ public class TestREST {
         Route route = routeFacade.find(1);
         return route;
     }    
-    
-    @GET
-    @Path("r2")
-    @RolesAllowed({"admin"})
-    public Cat testRole2() {
-        System.out.println("role admin");
-        return new Cat();
-    }
     
 }

@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package auth;
+package session;
 
+import auth.AuthAccessElement;
+import auth.AuthInfo;
 import entity.Role;
 import entity.User;
 import java.util.Collection;
@@ -13,19 +15,17 @@ import java.util.Set;
 import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import session.UserFacade;
 
 /**
  *
  * @author Notreal
  */
 @Stateless
-public class AuthServiceBean implements AuthService {
+public class AuthService {
 
     @EJB
     UserFacade userFacade;
 
-    @Override
     public AuthAccessElement login(AuthInfo authInfo) {
         
         User user = userFacade.findByLoginAndPassword(authInfo.getLogin(), authInfo.getPassword());
@@ -45,7 +45,6 @@ public class AuthServiceBean implements AuthService {
         return null;
     }
 
-    @Override
     public boolean isAuthorized(String authToken, Set<String> rolesAllowed) {
 
         User user = userFacade.findByToken(authToken);

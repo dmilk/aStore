@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package auth;
 
 import java.io.Serializable;
@@ -46,12 +41,10 @@ public class Salt implements Serializable {
             for(int i = 0; i < 1031; i++)
                 md.update(bytes);
             setSalt(UUID.nameUUIDFromBytes(md.digest()).toString());
-            //return new Salt(UUID.nameUUIDFromBytes(md.digest()).toString());
             
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Salt.class.getName()).log(Level.SEVERE, null, ex);
             setSalt(UUID.nameUUIDFromBytes(bytes).toString());
-            //return new Salt(UUID.nameUUIDFromBytes(bytes).toString());
         }
     }
 
@@ -76,10 +69,7 @@ public class Salt implements Serializable {
             return false;
         }
         final Salt other = (Salt) obj;
-        if (!Objects.equals(this.salt, other.salt)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.salt, other.salt);
     }
     
     

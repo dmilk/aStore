@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -180,9 +175,13 @@ public class Ticket implements Serializable {
         return true;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Ticket{" + "id=" + id + ", name=" + name + ", price=" + price + ", description=" + description + ", lastUpdate=" + lastUpdate + ", dataLabel=" + dataLabel + ", category=" + category + ", orderedTicketCollection=" + orderedTicketCollection + '}';
+//    }
+
     @Override
     public String toString() {
-        return "entity.Ticket[ id=" + id + " ]";
+        return "Ticket{" + "id=" + id + '}';
     }
-    
 }

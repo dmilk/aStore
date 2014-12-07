@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package resource;
 
 import entity.Route;
@@ -36,18 +31,4 @@ public class RouteResourceIT extends MyJerseyIT {
         assertEquals(200, response.getStatus());
     }
 
-    @Test
-    public void testCreateRoute() throws Exception {
-        final WebTarget target = target().
-                path("route");
-        
-        Response response = target.path("new").request(MediaType.APPLICATION_JSON_TYPE).get();
-        assertEquals(200, response.getStatus());
-        
-        final Route route = response.readEntity(Route.class);
-        assertNotNull(route.getId());
-        
-        assertEquals(204, target.path("" + route.getId()).request(MediaType.APPLICATION_JSON_TYPE).delete().getStatus());
-    }
-    
 }

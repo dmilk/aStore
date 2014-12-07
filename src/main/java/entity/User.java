@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -209,6 +204,15 @@ public class User implements Serializable {
     public void setRoleCollection(Collection<Role> roleCollection) {
         this.roleCollection = roleCollection;
     }
+    
+    @XmlTransient
+    public Collection<Order> getCustomerOrderCollection() {
+        return customerOrderCollection;
+    }
+
+    public void setCustomerOrderCollection(Collection<Order> customerOrderCollection) {
+        this.customerOrderCollection = customerOrderCollection;
+    }    
 
     @Override
     public int hashCode() {
@@ -233,15 +237,6 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "entity.User[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Order> getCustomerOrderCollection() {
-        return customerOrderCollection;
-    }
-
-    public void setCustomerOrderCollection(Collection<Order> customerOrderCollection) {
-        this.customerOrderCollection = customerOrderCollection;
     }
 
 }

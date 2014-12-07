@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package resource;
 
 import entity.Route;
@@ -36,31 +31,4 @@ public class RouteResource {
     public List<Route> findAll() {
         return routeFacade.findAll();
     }
-    
-    @GET
-    @Path("new")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Route createRoute() {
-//        Route route = new Route(3, "newRoute");
-//        routeFacade.create(route);
-        
-        Route route = new Route();
-        route.setName("newRoute");
-        routeFacade.create(route);
-
-        System.out.println("route = " + route);
-        
-        
-        return route;
-    }
-    
-    @DELETE
-    @Path("{id}")
-    public void deleteRoute(
-            @DecimalMin(value = "0")
-            @PathParam("id") final int id) {
-        System.out.println("Delete = " + id);
-        routeFacade.remove(routeFacade.find(id));
-    }
-    
 }

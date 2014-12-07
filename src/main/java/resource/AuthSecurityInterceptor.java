@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package resource;
 
 import auth.AuthAccessElement;
-import auth.AuthService;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -21,6 +15,7 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
+import session.AuthService;
 
 /**
  *

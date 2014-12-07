@@ -6,7 +6,6 @@
 package session;
 
 import java.util.UUID;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 
 /**
@@ -14,10 +13,10 @@ import javax.ejb.Stateless;
  * @author Notreal
  */
 @Stateless
-public class UuidBean {
+public class UuidService {
     private String uuid;
 
-    public UuidBean() {
+    public UuidService() {
         uuid = UUID.randomUUID().toString();
     }
 
