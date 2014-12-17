@@ -40,6 +40,9 @@ public class Category implements Serializable {
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Collection<Ticket> ticketCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
+    private Collection<SupportingDocument> supportingDocumentCollection;
+    
 
     public Category() {
     }
@@ -96,5 +99,14 @@ public class Category implements Serializable {
     @Override
     public String toString() {
         return "entity.Category[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<SupportingDocument> getSupportingDocumentCollection() {
+        return supportingDocumentCollection;
+    }
+
+    public void setSupportingDocumentCollection(Collection<SupportingDocument> supportingDocumentCollection) {
+        this.supportingDocumentCollection = supportingDocumentCollection;
     }
 }

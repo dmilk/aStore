@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Order.findByEmail", query = "SELECT c FROM Order c WHERE c.email = :email"),
     @NamedQuery(name = "Order.findByPhone", query = "SELECT c FROM Order c WHERE c.phone = :phone")})
 public class Order implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

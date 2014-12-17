@@ -43,8 +43,9 @@ public class Route implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "NAME")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "route")
-    private Collection<Order> customerOrderCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "routeId")
+    private Collection<Order> orderCollection;
+    
 
     public Route() {
     }
@@ -106,6 +107,15 @@ public class Route implements Serializable {
     @Override
     public String toString() {
         return "entity.Route[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Order> getOrderCollection() {
+        return orderCollection;
+    }
+
+    public void setOrder1Collection(Collection<Order> orderCollection) {
+        this.orderCollection = orderCollection;
     }
     
 }

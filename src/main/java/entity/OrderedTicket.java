@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,8 +42,23 @@ public class OrderedTicket implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1024)
-    @Column(name = "TICKET_DATA")
-    private String ticketData;
+    @Column(name = "SUPPORTING_DOCUMENT_DATA")
+    private String supportingDocumentData;
+    @Size(max = 30)
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+    @Size(max = 40)
+    @Column(name = "LAST_NAME")
+    private String lastName;
+    @Size(max = 30)
+    @Column(name = "MIDDLE_NAME")
+    private String middleName;
+    @Column(name = "DOB")
+    @Temporal(TemporalType.DATE)
+    private Date dob;
+    @JoinColumn(name = "SUPPORTING_DOCUMENT_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private SupportingDocument supportingDocumentId;
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Order order;
@@ -55,11 +73,6 @@ public class OrderedTicket implements Serializable {
         this.id = id;
     }
 
-    public OrderedTicket(Integer id, String ticketData) {
-        this.id = id;
-        this.ticketData = ticketData;
-    }
-
     @XmlTransient
     public Integer getId() {
         return id;
@@ -67,14 +80,6 @@ public class OrderedTicket implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTicketData() {
-        return ticketData;
-    }
-
-    public void setTicketData(String ticketData) {
-        this.ticketData = ticketData;
     }
 
     @XmlTransient
@@ -116,7 +121,55 @@ public class OrderedTicket implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.OrderedTicket[ id=" + id + " ]";
+        return "entity.OrderedTicket[ id=" + id + " ]"    }
+
+    public String getSupportingDocumentData() {
+        return supportingDocumentData;
+    }
+
+    public void setSupportingDocumentData(String supportingDocumentData) {
+        this.supportingDocumentData = supportingDocumentData;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public SupportingDocument getSupportingDocumentId() {
+        return supportingDocumentId;
+    }
+
+    public void setSupportingDocumentId(SupportingDocument supportingDocumentId) {
+        this.supportingDocumentId = supportingDocumentId;
+;
     }
 
 }

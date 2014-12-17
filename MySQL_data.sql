@@ -21,17 +21,22 @@ INSERT INTO `user` (`ID`, `EMAIL`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `PHONE
 INSERT INTO `user_has_role` (`USER_ID`, `ROLE_ID`) VALUES (1,1);
 INSERT INTO `user_has_role` (`USER_ID`, `ROLE_ID`) VALUES (1,2);
 
-INSERT INTO `supporting_document` (`ID`, `NAME`) VALUES (1,'rf_passport');
-INSERT INTO `supporting_document` (`ID`, `NAME`) VALUES (2,'passport');
-
-INSERT INTO `supporting_document_field` (`ID`, `NAME`, `REGEXP`, `SUPPORTING_DOCUMENT_ID`) VALUES (1, 'number', '', 1);
-INSERT INTO `supporting_document_field` (`ID`, `NAME`, `REGEXP`, `SUPPORTING_DOCUMENT_ID`) VALUES (2, 'date_of_issue', '', 1);
-
-INSERT INTO `supporting_document_field` (`ID`, `NAME`, `REGEXP`, `SUPPORTING_DOCUMENT_ID`) VALUES (3, 'number', '', 2);
-INSERT INTO `supporting_document_field` (`ID`, `NAME`, `REGEXP`, `SUPPORTING_DOCUMENT_ID`) VALUES (4, 'date_of_issue', '', 2);
-INSERT INTO `supporting_document_field` (`ID`, `NAME`, `REGEXP`, `SUPPORTING_DOCUMENT_ID`) VALUES (5, 'valid_until', '', 2);
-
-INSERT INTO `ticket_has_supporting_document` (`TICKET_ID`, `SUPPORTING_DOCUMENT_ID`) VALUES (1, 1);
-INSERT INTO `ticket_has_supporting_document` (`TICKET_ID`, `SUPPORTING_DOCUMENT_ID`) VALUES (1, 2);
-INSERT INTO `ticket_has_supporting_document` (`TICKET_ID`, `SUPPORTING_DOCUMENT_ID`) VALUES (2, 1);
-INSERT INTO `ticket_has_supporting_document` (`TICKET_ID`, `SUPPORTING_DOCUMENT_ID`) VALUES (2, 2);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (0, 'Паспорт гражданиа Российской Федерации', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (1, 'Паспорт моряка', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (2, 'Общегражданский заграничный паспорт гражданин', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (3, 'Паспорт иностранного гражданина', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (4, 'Свидетельство о рождении', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (5, 'Удостоверение личности военнослужащего', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (6, 'Удостоверение личности лица без гражданства', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (7, 'Временное удостоверение личности, выдаваемое ', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (8, 'Военный билет военнослужащего срочной службы', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (9, 'Вид на жительство иностранного гражданина или', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (10, 'Справка об освобождении из мест лишения свобо', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (11, 'Паспорт гражданина СССР', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (12, 'Паспорт дипломатический', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (13, 'Паспорт служебный (кроме паспорта моряка и ди', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (14, 'Свидетельство о возвращении из стран СНГ', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (15, 'Справка об утере паспорта', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (16, 'Удостоверение депутата', 1);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (19, 'СТС', 2);
+INSERT INTO `supporting_document` (`DOC_TYPE`, `NAME`, `CATEGORY_ID`) VALUES (20, 'ПТС', 2);
