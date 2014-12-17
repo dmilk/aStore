@@ -91,7 +91,7 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<Order> customerOrderCollection;
+    private Collection<Order> orderCollection;
 
     public User() {
     }
@@ -206,12 +206,12 @@ public class User implements Serializable {
     }
     
     @XmlTransient
-    public Collection<Order> getCustomerOrderCollection() {
-        return customerOrderCollection;
+    public Collection<Order> getOrderCollection() {
+        return orderCollection;
     }
 
-    public void setCustomerOrderCollection(Collection<Order> customerOrderCollection) {
-        this.customerOrderCollection = customerOrderCollection;
+    public void setOrderCollection(Collection<Order> customerOrderCollection) {
+        this.orderCollection = customerOrderCollection;
     }    
 
     @Override

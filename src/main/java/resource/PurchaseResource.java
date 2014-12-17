@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.annotation.XmlRootElement;
 import session.OrderService;
 import session.UserFacade;
 
@@ -23,7 +24,7 @@ import session.UserFacade;
 public class PurchaseResource {
 
     @EJB
-    private OrderService orderManagerNew;
+    private OrderService orderService;
 
     @EJB
     private UserFacade userFacade;
@@ -31,14 +32,24 @@ public class PurchaseResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public String placeOrder(@Context HttpServletRequest request, Order order) {        
-        int confirmationNumber = 0;
+    public ConfirmationNumber placeOrder(@Context HttpServletRequest request, Order order) {        
         String authToken = request.getHeader(AuthAccessElement.PARAM_AUTH_TOKEN);
         User user = userFacade.findByToken(authToken);
         
-        confirmationNumber = orderManagerNew.placeOrder(order, user);
+        int confirmationNumber = orderService.placeOrder(order, user);
         
-        return Integer.toString(confirmationNumber);
+        return new ConfirmationNumber(confirmationNumber);
+    }
+    
+    static class ConfirmationNumber {
+        public int orderId;
+
+        public ConfirmationNumber() {
+        }
+
+        public ConfirmationNumber(int orderId) {
+            this.orderId = orderId;
+        }
     }
 
 }

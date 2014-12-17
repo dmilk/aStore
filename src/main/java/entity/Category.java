@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Category.findById", query = "SELECT c FROM Category c WHERE c.id = :id"),
     @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")})
 public class Category implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +41,8 @@ public class Category implements Serializable {
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Collection<Ticket> ticketCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Collection<SupportingDocument> supportingDocumentCollection;
-    
 
     public Category() {
     }
@@ -76,6 +76,15 @@ public class Category implements Serializable {
         this.ticketCollection = ticketCollection;
     }
 
+    @XmlTransient
+    public Collection<SupportingDocument> getSupportingDocumentCollection() {
+        return supportingDocumentCollection;
+    }
+
+    public void setSupportingDocumentCollection(Collection<SupportingDocument> supportingDocumentCollection) {
+        this.supportingDocumentCollection = supportingDocumentCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -101,12 +110,4 @@ public class Category implements Serializable {
         return "entity.Category[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public Collection<SupportingDocument> getSupportingDocumentCollection() {
-        return supportingDocumentCollection;
-    }
-
-    public void setSupportingDocumentCollection(Collection<SupportingDocument> supportingDocumentCollection) {
-        this.supportingDocumentCollection = supportingDocumentCollection;
-    }
 }

@@ -43,7 +43,7 @@ public class Route implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "NAME")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "routeId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "route")
     private Collection<Order> orderCollection;
     
 
@@ -76,12 +76,12 @@ public class Route implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Order> getCustomerOrderCollection() {
-        return customerOrderCollection;
+    public Collection<Order> getOrderCollection() {
+        return orderCollection;
     }
 
-    public void setCustomerOrderCollection(Collection<Order> customerOrderCollection) {
-        this.customerOrderCollection = customerOrderCollection;
+    public void setOrderCollection(Collection<Order> orderCollection) {
+        this.orderCollection = orderCollection;
     }
 
     @Override
@@ -108,14 +108,4 @@ public class Route implements Serializable {
     public String toString() {
         return "entity.Route[ id=" + id + " ]";
     }
-
-    @XmlTransient
-    public Collection<Order> getOrderCollection() {
-        return orderCollection;
-    }
-
-    public void setOrder1Collection(Collection<Order> orderCollection) {
-        this.orderCollection = orderCollection;
-    }
-    
 }

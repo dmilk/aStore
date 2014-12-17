@@ -193,7 +193,6 @@ public class Order implements Serializable {
         this.user = user;
     }
 
-//    @XmlTransient
     public List<OrderedTicket> getOrderedTicketCollection() {
         return orderedTicketCollection;
     }

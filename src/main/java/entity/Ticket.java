@@ -175,11 +175,6 @@ public class Ticket implements Serializable {
         return true;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Ticket{" + "id=" + id + ", name=" + name + ", price=" + price + ", description=" + description + ", lastUpdate=" + lastUpdate + ", dataLabel=" + dataLabel + ", category=" + category + ", orderedTicketCollection=" + orderedTicketCollection + '}';
-//    }
-
     @Override
     public String toString() {
         return "Ticket{" + "id=" + id + '}';

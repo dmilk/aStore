@@ -3,8 +3,11 @@ package session;
 import entity.Order;
 import entity.OrderedTicket;
 import entity.Route;
+import entity.SupportingDocument;
+import entity.Ticket;
 import entity.User;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -47,27 +50,41 @@ public class OrderService {
     TicketFacade ticketFacade;
     
     @EJB
+    SupportingDocumentFacade supportingDocumentFacade;
+    
+    @EJB
     ConfirmationNumberService confirmationNumberService;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int placeOrder(Order order, User user) {
         try {
-            // check incoming route
             List<OrderedTicket> orderedTickets = order.getOrderedTicketCollection();
             Route route = routeFacade.find(order.getRoute().getId());
-            order.setUser(user);
-            order.setRoute(route);
-            order.setAmount(getTolal(orderedTickets));
+            
+            if (user == null) {
+                user = userFacade.find(0);
+            }
+            
+            Order newOrder = new Order();
+            newOrder.setFirstName(order.getFirstName());
+            newOrder.setLastName(order.getLastName());
+            newOrder.setEmail(order.getEmail());
+            newOrder.setPhone(order.getPhone());
+            
+            newOrder.setUser(user);
+            newOrder.setRoute(route);
+            // m.b. re-calculate after persist?
+            newOrder.setAmount(getTolal(orderedTickets));
             
             int confirmationNumber = confirmationNumberService.get();
-            order.setConfirmationNumber(confirmationNumber);
+            newOrder.setConfirmationNumber(confirmationNumber);
 
-            order.setOrderedTicketCollection(null); // Collections.EMPTY_LIST
+            newOrder.setOrderedTicketCollection(null); // Collections.EMPTY_LIST
 
-            em.persist(order);
+            em.persist(newOrder);
             
-            addOrderedItems(order, orderedTickets);
-            return order.getConfirmationNumber();
+            addOrderedItems(newOrder, orderedTickets);
+            return newOrder.getConfirmationNumber();
             
         } catch (Exception e) {
             context.setRollbackOnly();
@@ -87,13 +104,23 @@ public class OrderService {
     private void addOrderedItems(Order order, List<OrderedTicket> orderedTickets) {
         em.flush();
 
-        for (OrderedTicket item : orderedTickets) {
-            OrderedTicket orderedTicket = new OrderedTicket();
-            orderedTicket.setOrder(order);
-            orderedTicket.setTicket(item.getTicket());
-            orderedTicket.setTicketData(item.getTicketData());
+        for (OrderedTicket orderedTicket : orderedTickets) {
+            OrderedTicket newOrderedTicket = new OrderedTicket();
+            Ticket ticket = ticketFacade.find(orderedTicket.getTicket().getId());
+            SupportingDocument supportingDocument = supportingDocumentFacade.find(orderedTicket.getSupportingDocument().getId());
+            
+            newOrderedTicket.setFirstName(orderedTicket.getFirstName());
+            newOrderedTicket.setLastName(orderedTicket.getLastName());
+            newOrderedTicket.setMiddleName(orderedTicket.getMiddleName());
+            // Date must be parsed from dobString
+            newOrderedTicket.setDob(new Date());
+            
+            newOrderedTicket.setOrder(order);
+            newOrderedTicket.setTicket(ticket);
+            newOrderedTicket.setSupportingDocument(supportingDocument);
+            newOrderedTicket.setSupportingDocumentData(orderedTicket.getSupportingDocumentData());
 
-            em.persist(orderedTicket);
+            em.persist(newOrderedTicket);
         }
     }
 

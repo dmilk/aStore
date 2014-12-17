@@ -156,7 +156,7 @@ public class UserResourceIT extends MyJerseyIT {
         //should be NULL
         assertNull(user.getId());
         assertFalse(user.getActive());
-        assertNull(user.getCustomerOrderCollection());
+        assertNull(user.getOrderCollection());
         assertNull(user.getDateCreated());
         assertNull(user.getPassword());
         assertNull(user.getRoleCollection());

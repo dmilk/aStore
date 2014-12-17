@@ -113,11 +113,11 @@ public class UserFacade extends AbstractFacade<User> {
         return salt;
     }
     
-    public Collection<Order> getCustomerOrderCollection(String authToken) {
+    public Collection<Order> getOrderCollection(String authToken) {
         User user = findByToken(authToken);
         if (user != null) {
             em.refresh(user);
-            return user.getCustomerOrderCollection();
+            return user.getOrderCollection();
         } else
         {
             return Collections.EMPTY_LIST;

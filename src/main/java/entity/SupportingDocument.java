@@ -5,8 +5,6 @@
  */
 package entity;
 
-import entity.Category;
-import entity.OrderedTicket;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -24,8 +22,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  *
@@ -57,8 +57,8 @@ public class SupportingDocument implements Serializable {
     private int docType;
     @JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Category categoryId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supportingDocumentId")
+    private Category category;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supportingDocument")
     private Collection<OrderedTicket> orderedTicketCollection;
 
     public SupportingDocument() {
@@ -98,12 +98,17 @@ public class SupportingDocument implements Serializable {
         this.docType = docType;
     }
 
-    public Category getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    
+//    @XmlAttribute
+    public int getCategoryId() {
+        return this.category.getId();
     }
 
     @XmlTransient
@@ -137,7 +142,7 @@ public class SupportingDocument implements Serializable {
 
     @Override
     public String toString() {
-        return "entity2.SupportingDocument[ id=" + id + " ]";
+        return "entity.SupportingDocument[ id=" + id + " ]";
     }
     
 }

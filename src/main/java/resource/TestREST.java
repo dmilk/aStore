@@ -1,6 +1,8 @@
 package resource;
 
 import entity.Route;
+import static entity.Ticket_.id;
+import entity.User;
 import java.util.Enumeration;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -15,7 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import session.RouteFacade;
-import session.TestService;
+import session.UserFacade;
 
 /**
  *
@@ -42,14 +44,15 @@ public class TestREST {
     }
     
     @EJB
-    TestService testService;
+    UserFacade userFacade;
     
     @GET
     @Path("c")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createRoute() {
-        int id = testService.createRoute();
-        return Response.ok(id).build();
+    public Response searchUser0() {
+        User user0 = userFacade.find(0);
+        System.out.println(user0);
+        return Response.ok(user0.getFirstName()).build();
     }
     
     @GET
