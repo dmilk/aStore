@@ -7,6 +7,9 @@ import entity.SupportingDocument;
 import entity.Ticket;
 import entity.User;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
@@ -48,10 +51,10 @@ public class OrderService {
 
     @EJB
     TicketFacade ticketFacade;
-    
+
     @EJB
     SupportingDocumentFacade supportingDocumentFacade;
-    
+
     @EJB
     ConfirmationNumberService confirmationNumberService;
 
@@ -60,32 +63,32 @@ public class OrderService {
         try {
             List<OrderedTicket> orderedTickets = order.getOrderedTicketCollection();
             Route route = routeFacade.find(order.getRoute().getId());
-            
+
             if (user == null) {
                 user = userFacade.find(0);
             }
-            
+
             Order newOrder = new Order();
             newOrder.setFirstName(order.getFirstName());
             newOrder.setLastName(order.getLastName());
             newOrder.setEmail(order.getEmail());
             newOrder.setPhone(order.getPhone());
-            
+
             newOrder.setUser(user);
             newOrder.setRoute(route);
             // m.b. re-calculate after persist?
             newOrder.setAmount(getTolal(orderedTickets));
-            
+
             int confirmationNumber = confirmationNumberService.get();
             newOrder.setConfirmationNumber(confirmationNumber);
 
             newOrder.setOrderedTicketCollection(null); // Collections.EMPTY_LIST
 
             em.persist(newOrder);
-            
+
             addOrderedItems(newOrder, orderedTickets);
             return newOrder.getConfirmationNumber();
-            
+
         } catch (Exception e) {
             context.setRollbackOnly();
             return 0;
@@ -101,20 +104,23 @@ public class OrderService {
 
     }
 
-    private void addOrderedItems(Order order, List<OrderedTicket> orderedTickets) {
+    private void addOrderedItems(Order order, List<OrderedTicket> orderedTickets) throws ParseException {
         em.flush();
 
         for (OrderedTicket orderedTicket : orderedTickets) {
             OrderedTicket newOrderedTicket = new OrderedTicket();
             Ticket ticket = ticketFacade.find(orderedTicket.getTicket().getId());
             SupportingDocument supportingDocument = supportingDocumentFacade.find(orderedTicket.getSupportingDocument().getId());
-            
+
             newOrderedTicket.setFirstName(orderedTicket.getFirstName());
             newOrderedTicket.setLastName(orderedTicket.getLastName());
             newOrderedTicket.setMiddleName(orderedTicket.getMiddleName());
             // Date must be parsed from dobString
-            newOrderedTicket.setDob(new Date());
-            
+            DateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+            Date date = format.parse(orderedTicket.getDobString());
+
+            newOrderedTicket.setDob(date);
+
             newOrderedTicket.setOrder(order);
             newOrderedTicket.setTicket(ticket);
             newOrderedTicket.setSupportingDocument(supportingDocument);
