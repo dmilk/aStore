@@ -1,6 +1,7 @@
 package session;
 
 import entity.Order;
+import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +22,10 @@ public class OrderFacade extends AbstractFacade<Order> {
 
     public OrderFacade() {
         super(Order.class);
+    }
+    
+    public Collection<Order> findAll1() {
+        return em.createNamedQuery("Order.findAll1").getResultList();
     }
     
 }

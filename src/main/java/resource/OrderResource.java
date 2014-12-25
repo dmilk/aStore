@@ -20,7 +20,7 @@ import session.UserFacade;
 public class OrderResource {
 
     @EJB
-    OrderFacade customerOrderFacade;
+    OrderFacade orderFacade;
 
     @EJB
     UserFacade userFacade;
@@ -29,6 +29,13 @@ public class OrderResource {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Collection<Order> findAll(@HeaderParam(AuthAccessElement.PARAM_AUTH_TOKEN) String authToken) {
         return userFacade.getOrderCollection(authToken);
+    }
+
+    @GET
+    @Path("xdrlkjhgksdtjhkjkthlkhkrthprtfhrturtyuhjrtujrtudrhywrtuwr6ju")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Collection<Order> findByRoute() {
+        return orderFacade.findAll1();
     }
     
 }
