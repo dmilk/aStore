@@ -1,7 +1,6 @@
 package resource;
 
 import entity.Route;
-import static entity.Ticket_.id;
 import entity.User;
 import java.util.Enumeration;
 import javax.annotation.security.PermitAll;
@@ -16,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import session.EmailSessionBean;
 import session.RouteFacade;
 import session.UserFacade;
 
@@ -28,6 +28,9 @@ public class TestREST {
     
     @EJB
     private RouteFacade routeFacade;
+    
+    @EJB
+    private EmailSessionBean emailSessionBean;
     
     @GET
     public String test1(@Context HttpServletRequest request) {
@@ -59,6 +62,13 @@ public class TestREST {
     @Path("t")
     public String testT() {
         return "Hello";
+    }
+    
+    @GET
+    @Path("m")
+    public String testMail() {
+        emailSessionBean.sendEmail("notreal13@gmail.com", "mail from gf", "simple text...");
+        return "Sending mail...";
     }
     
     @GET
