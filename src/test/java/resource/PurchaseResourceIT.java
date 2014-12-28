@@ -64,9 +64,8 @@ public class PurchaseResourceIT extends MyJerseyIT {
                 post(Entity.entity(order, MediaType.APPLICATION_JSON_TYPE + ";charset=UTF-8;"));
 
         assertEquals(200, response.getStatus());
-        String confirmationNumberString = response.readEntity(String.class);
-        int confirmationNumber = Integer.valueOf(confirmationNumberString);
-        assertTrue(confirmationNumber > 0);
+        ConfirmationNumber confirmationNumber = response.readEntity(ConfirmationNumber.class);
+        assertTrue(confirmationNumber.orderId > 0);
     }
 
     @Test
@@ -119,6 +118,17 @@ public class PurchaseResourceIT extends MyJerseyIT {
         for(OrderedTicket orderedTicket : orderTest.getOrderedTicketCollection())
             ticketSet.add(orderedTicket.getTicket());
         assertEquals(ticketSet.size(), 6);
+    }
+    
+    static class ConfirmationNumber {
+        public int orderId;
+
+        public ConfirmationNumber() {
+        }
+
+        public ConfirmationNumber(int orderId) {
+            this.orderId = orderId;
+        }
     }
 
 }

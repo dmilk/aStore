@@ -1,23 +1,30 @@
 {
-    "email": "oleg@setco.ru",
-    "firstName": "Олег",
-    "lastName": "Сорокин",
+    "email": "test@test",
+    "firstName": "firstName",
+    "lastName": "lastName",
     "orderedTicketCollection": [
         {
+            "dobString": "1990.1.10",
+            "firstName": "FName",
+            "lastName": "LName",
+            "middleName": "MName",
+            "supportingDocument": {
+                "id": 1
+            },
+            "supportingDocumentData": "xxxx 111222",
             "ticket": {
                 "category": {
-                    "id": 2,
-                    "name": "vehicle"
+                    "id": 1,
+                    "name": "man"
                 },
-                "id": 5,
-                "name": "car",
-                "price": 200
-            },
-            "ticketData": "VVV"
+                "id": 1,
+                "name": "adult",
+                "price": 162
+            }
         }
     ],
-    "phone": "7755529",
+    "phone": "1",
     "route": {
-        "id": 1
+        "id": 2
     }
 }

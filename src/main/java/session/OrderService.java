@@ -86,7 +86,7 @@ public class OrderService {
 
             em.persist(newOrder);
 // added 24/12/14
-em.refresh(newOrder);
+//em.refresh(newOrder);
             addOrderedItems(newOrder, orderedTickets);
 
             return newOrder.getConfirmationNumber();

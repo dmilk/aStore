@@ -1,4 +1,16 @@
 INSERT INTO "USER" ("ID", "EMAIL", "PASSWORD", "SALT", "FIRST_NAME", "LAST_NAME", "PHONE", "ACTIVE", "DATE_CREATED", "TOKEN")
+VALUES (0,
+        'example@example.com',
+        NULL,
+        NULL,
+        'anonymous',
+        'anonumpus',
+        '0',
+        0,
+        '2014-10-18 20:00:00',
+        NULL);
+
+INSERT INTO "USER" ("ID", "EMAIL", "PASSWORD", "SALT", "FIRST_NAME", "LAST_NAME", "PHONE", "ACTIVE", "DATE_CREATED", "TOKEN")
 VALUES (1,
         'notreal@mail.ru',
         'f34ae573a52c6bed3c17e94b0d180268fd88123d282c780122a8e9695011c7c9',

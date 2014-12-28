@@ -280,7 +280,8 @@
                             <fileset>
                                 <basedir>${basedir}</basedir>
                                 <includes>
-                                    <include>profiles/${build.profile.id}/astore_00_delete_data.sql</include>                                    
+                                    <include>profiles/${build.profile.id}/*.sql</include>                                    
+<!--                                    <include>profiles/${build.profile.id}/astore_00_delete_data.sql</include>                                    
                                     <include>profiles/${build.profile.id}/astore_01_user.sql</include>
                                     <include>profiles/${build.profile.id}/astore_02_role.sql</include>
                                     <include>profiles/${build.profile.id}/astore_03_user_has_role.sql</include>
@@ -288,7 +289,7 @@
                                     <include>profiles/${build.profile.id}/astore_05_category.sql</include>
                                     <include>profiles/${build.profile.id}/astore_06_ticket.sql</include>
                                     <include>profiles/${build.profile.id}/astore_07_order.sql</include>
-                                    <include>profiles/${build.profile.id}/astore_08_ordered_ticket.sql</include>
+                                    <include>profiles/${build.profile.id}/astore_08_ordered_ticket.sql</include>-->
                                 </includes>
                             </fileset>
                         </configuration>
