@@ -38,6 +38,13 @@
                 <final.name.suffix>_it</final.name.suffix>
             </properties>
         </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile.id>production</build.profile.id>
+            <skip.integration.tests>false</skip.integration.tests>
+            </properties>
+        </profile>
     </profiles> 
     
     <dependencies>
@@ -281,7 +288,7 @@
                                 <basedir>${basedir}</basedir>
                                 <includes>
                                     <include>profiles/${build.profile.id}/*.sql</include>                                    
-<!--                                    <include>profiles/${build.profile.id}/astore_00_delete_data.sql</include>                                    
+                                    <!--                                    <include>profiles/${build.profile.id}/astore_00_delete_data.sql</include>                                    
                                     <include>profiles/${build.profile.id}/astore_01_user.sql</include>
                                     <include>profiles/${build.profile.id}/astore_02_role.sql</include>
                                     <include>profiles/${build.profile.id}/astore_03_user_has_role.sql</include>

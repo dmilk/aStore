@@ -85,9 +85,8 @@ public class OrderService {
             newOrder.setOrderedTicketCollection(null); // Collections.EMPTY_LIST
 
             em.persist(newOrder);
-// added 24/12/14
-//em.refresh(newOrder);
             addOrderedItems(newOrder, orderedTickets);
+            em.refresh(newOrder);
 
             return newOrder.getConfirmationNumber();
 
@@ -131,7 +130,7 @@ public class OrderService {
             em.persist(newOrderedTicket);
         }
 // add 24/12/14
-em.flush();
+        em.flush();
     }
 
 }
