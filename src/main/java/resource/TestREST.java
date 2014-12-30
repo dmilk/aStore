@@ -67,8 +67,8 @@ public class TestREST {
     @GET
     @Path("m")
     public String testMail() {
-        emailSessionBean.sendEmail("notreal13@gmail.com", "mail from Glassfish", "bla-bla-bla");
-        emailSessionBean.sendEmail("dmitry_kul@mail.ru", "mail from Glassfish", "bla-bla-bla");
+        emailSessionBean.sendEmail("notreal13@gmail.com", "mail from Glassfish", "bla-bla-bla!!!");
+        emailSessionBean.sendEmail("dmitry_kul@mail.ru", "mail from Glassfish", "bla-bla-bla!!!");
         return "Sending mail...";
     }
     
