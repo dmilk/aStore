@@ -83,7 +83,7 @@ public class UserResource {
         if (authAccessElement != null) {
             request.getSession().setAttribute(AuthAccessElement.PARAM_AUTH_TOKEN, authAccessElement.getAuthToken());
         } else {
-            return Response.status(Response.Status.FORBIDDEN).entity("XX фиг вам!!!").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("!").build();
         }
         return Response.ok(authAccessElement).build();
     }
