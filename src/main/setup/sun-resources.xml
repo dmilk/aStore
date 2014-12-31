@@ -15,6 +15,6 @@
     <property name="useUnicode" value="true"/>
     <property name="characterEncoding" value="utf8"/>
     <property name="User" value="root"/>
-    <property name="Password" value="nbuser"/>
+    <property name="Password" value="Dmilk12"/>
   </jdbc-connection-pool>
 </resources>

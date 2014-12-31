@@ -50,9 +50,12 @@ public class TicketResource {
     public static Comparator<Ticket> TicketNameComparator = new Comparator<Ticket>() {
         @Override
         public int compare(Ticket t1, Ticket t2) {
-            String ticketName1 = t1.getName();
-            String ticketName2 = t2.getName();
-            return ticketName1.compareTo(ticketName2);
+//            String ticketName1 = t1.getName();
+//            String ticketName2 = t2.getName();
+            Integer ticketId1 = t1.getId();
+            Integer ticketId2 = t2.getId();
+            return ticketId1.compareTo(ticketId2);
+//            return ticketName1.compareTo(ticketName2);
         }
     };
 
